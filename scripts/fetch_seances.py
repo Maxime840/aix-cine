@@ -553,6 +553,27 @@ def main():
     # Ne garder que les films qui ont encore au moins une séance
     used = {s["film_id"] for s in seances}
     films = {k: v for k, v in films.items() if k in used}
+
+    # Enrichir chaque film avec sa note et son lien Letterboxd
+    lb_cache_file = ROOT_DIR / "data" / "letterboxd_ratings.json"
+    lb_cache = {}
+    if lb_cache_file.exists():
+        try:
+            lb_cache = json.loads(lb_cache_file.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+
+    for fid, f_obj in films.items():
+        lb_info = lb_cache.get(fid) or {}
+        if lb_info.get("letterboxd_url"):
+            f_obj["letterboxd_url"] = lb_info["letterboxd_url"]
+            f_obj["letterboxd_rating"] = lb_info.get("letterboxd_rating")
+        else:
+            q = f"{f_obj.get('title', fid)} {f_obj.get('year', '')}".strip()
+            encoded = urllib.parse.quote_plus(q)
+            f_obj["letterboxd_url"] = f"https://letterboxd.com/search/{encoded}/"
+            f_obj["letterboxd_rating"] = None
+
     first, last = NOW, NOW + timedelta(days=len(DAYS) - 1)
     payload = {
         "week_label": (f"Du {FR_DAYS[first.weekday()].lower()} {first.day} {FR_MONTHS_LONG[first.month - 1]} "

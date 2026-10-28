@@ -124,15 +124,51 @@
     return String(text || '').replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
   }
 
+  function LetterboxdBadge({ film, compact = false }) {
+    if (!film) return null;
+    const url = film.letterboxd_url || `https://letterboxd.com/search/${encodeURIComponent(film.title)}/`;
+    const hasRating = typeof film.letterboxd_rating === 'number' && film.letterboxd_rating > 0;
+
+    return h('a', {
+      ...external,
+      href: url,
+      className: `letterboxd-badge${compact ? ' is-compact' : ''}`,
+      title: hasRating
+        ? `Consulter la fiche Letterboxd de « ${film.title} » (note moyenne ${film.letterboxd_rating.toFixed(1)} / 5)`
+        : `Rechercher « ${film.title} » sur Letterboxd`
+    },
+      h('span', { className: 'lb-dots', 'aria-hidden': true },
+        h('span', { className: 'lb-dot lb-dot-orange' }),
+        h('span', { className: 'lb-dot lb-dot-green' }),
+        h('span', { className: 'lb-dot lb-dot-blue' })),
+      h('span', { className: 'lb-name' }, 'Letterboxd'),
+      hasRating && h('span', { className: 'lb-score' }, `★ ${film.letterboxd_rating.toFixed(1)}`),
+      h(Icon, { name: 'arrow', className: 'lb-arrow' }));
+  }
+
   function FilmPoster({ film, href }) {
     const [failed, setFailed] = useState(false);
-    return h('a', { ...external, href, className: 'film-poster',
-      'aria-label': `Billetterie officielle pour ${film.title} (nouvel onglet)` },
-      film.poster_url && !failed
-        ? h('img', { src: film.poster_url, alt: `Affiche de ${film.title}`, className: 'poster-image',
-            loading: 'lazy', onError: () => setFailed(true) })
-        : h('span', { className: 'poster-fallback' }, h(Icon, { name: 'film' }), film.title),
-      film.is_new && h('span', { className: 'poster-badges' }, h('span', { className: 'new-badge' }, 'Nouveau')));
+    const hasLb = typeof film.letterboxd_rating === 'number' && film.letterboxd_rating > 0;
+    return h('div', { className: 'film-poster-container' },
+      h('a', { ...external, href, className: 'film-poster',
+        'aria-label': `Billetterie officielle pour ${film.title} (nouvel onglet)` },
+        film.poster_url && !failed
+          ? h('img', { src: film.poster_url, alt: `Affiche de ${film.title}`, className: 'poster-image',
+              loading: 'lazy', onError: () => setFailed(true) })
+          : h('span', { className: 'poster-fallback' }, h(Icon, { name: 'film' }), film.title),
+        h('span', { className: 'poster-badges' },
+          film.is_new && h('span', { className: 'new-badge' }, 'Nouveau'))),
+      hasLb && h('a', {
+        ...external,
+        href: film.letterboxd_url || `https://letterboxd.com/search/${encodeURIComponent(film.title)}/`,
+        className: 'poster-lb-tag',
+        title: `Note Letterboxd : ${film.letterboxd_rating.toFixed(1)} / 5 (ouvrir la fiche)`
+      },
+        h('span', { className: 'lb-dots is-micro', 'aria-hidden': true },
+          h('span', { className: 'lb-dot lb-dot-orange' }),
+          h('span', { className: 'lb-dot lb-dot-green' }),
+          h('span', { className: 'lb-dot lb-dot-blue' })),
+        `★ ${film.letterboxd_rating.toFixed(1)}`));
   }
 
   function FilmInfo({ film, session, fallbackUrl, showDayInButton }) {
@@ -151,14 +187,28 @@
         h('p', { className: 'film-meta' }, [film.director && `De ${film.director}`, duration(film.duration_min), film.year].filter(Boolean).join(' · ')),
         h('div', { className: 'genre-list' },
           (film.genres || []).map((genre) => h('span', { key: genre, className: 'genre-badge' }, genre)),
-          film.rating && h('span', { className: 'rating-badge', title: 'Note du film dans le programme' },
-            h(Icon, { name: 'star' }), film.rating)),
+          h(LetterboxdBadge, { film, compact: true })),
         synopsisText && h('p', { className: 'film-synopsis', title: synopsisText }, synopsisText),
-        h('a', { ...external, href, className: 'film-booking secondary-link' },
-          isDirectCheckout
-            ? `Paiement Pathé (${sessionLabel || 'direct'})`
-            : `Billetterie officielle${sessionLabel ? ` (${sessionLabel})` : ''}`,
-          h(Icon, { name: 'arrow' }))));
+        h('div', { className: 'film-actions-bar' },
+          h('a', { ...external, href, className: 'film-booking secondary-link' },
+            isDirectCheckout
+              ? `Paiement Pathé (${sessionLabel || 'direct'})`
+              : `Billetterie officielle${sessionLabel ? ` (${sessionLabel})` : ''}`,
+            h(Icon, { name: 'arrow' })),
+          h('a', {
+            ...external,
+            href: film.letterboxd_url || `https://letterboxd.com/search/${encodeURIComponent(film.title)}/`,
+            className: 'film-lb-link secondary-link',
+            title: `Ouvrir la fiche Letterboxd de « ${film.title} »`
+          },
+            h('span', { className: 'lb-dots is-micro', 'aria-hidden': true },
+              h('span', { className: 'lb-dot lb-dot-orange' }),
+              h('span', { className: 'lb-dot lb-dot-green' }),
+              h('span', { className: 'lb-dot lb-dot-blue' })),
+            typeof film.letterboxd_rating === 'number'
+              ? `Fiche Letterboxd (★ ${film.letterboxd_rating.toFixed(1)})`
+              : 'Fiche Letterboxd',
+            h(Icon, { name: 'arrow' })))));
   }
 
   function SeatsBadge({ session }) {
@@ -294,11 +344,33 @@
         })));
   }
 
-  function FilmGallery({ filtered, otherWeekSessions, selectedDay, onSelectDay }) {
-    const dayGroups = Array.from(groupBy(filtered, 'film_id'));
-    const otherGroups = Array.from(groupBy(otherWeekSessions || [], 'film_id'));
+  function FilmGallery({ filtered, otherWeekSessions, selectedDay, onSelectDay, sortByLetterboxd, setSortByLetterboxd }) {
+    const sorter = (a, b) => {
+      if (sortByLetterboxd) {
+        const ra = (films[a[0]] || {}).letterboxd_rating || 0;
+        const rb = (films[b[0]] || {}).letterboxd_rating || 0;
+        if (rb !== ra) return rb - ra;
+      }
+      return b[1].length - a[1].length;
+    };
+
+    const dayGroups = Array.from(groupBy(filtered, 'film_id')).sort(sorter);
+    const otherGroups = Array.from(groupBy(otherWeekSessions || [], 'film_id')).sort(sorter);
 
     return h(React.Fragment, null,
+      h('div', { className: 'gallery-toolbar' },
+        h('span', { className: 'gallery-count' }, `${plural(dayGroups.length, 'film')} à l’affiche`),
+        h('button', {
+          type: 'button',
+          className: `letterboxd-sort-button${sortByLetterboxd ? ' is-active' : ''}`,
+          onClick: () => setSortByLetterboxd(!sortByLetterboxd),
+          title: 'Classer les films du mieux noté au moins bien noté sur Letterboxd'
+        },
+          h('span', { className: 'lb-dots', 'aria-hidden': true },
+            h('span', { className: 'lb-dot lb-dot-orange' }),
+            h('span', { className: 'lb-dot lb-dot-green' }),
+            h('span', { className: 'lb-dot lb-dot-blue' })),
+          sortByLetterboxd ? 'Tri : Mieux notés Letterboxd (★ ↓)' : 'Trier par note Letterboxd')),
       dayGroups.length > 0 && h('div', { className: 'film-gallery' },
         dayGroups.map(([filmId, filmSessions]) =>
           h(FilmTile, { key: filmId, filmId, filmSessions, showDayInLinks: selectedDay === 'all' }))),
@@ -372,6 +444,7 @@
     const [searchQuery, setSearchQuery] = useState('');
     const [filtersOpen, setFiltersOpen] = useState(false);
     const [sort, setSort] = useState('screen_desc');
+    const [sortByLetterboxd, setSortByLetterboxd] = useState(false);
 
     // Actualisation automatique : recharge les séances toutes les heures,
     // et au retour sur l'onglet s'il est resté ouvert plus de 30 min.
@@ -564,7 +637,9 @@
                     filtered,
                     otherWeekSessions,
                     selectedDay: effectiveDay,
-                    onSelectDay: setSelectedDay
+                    onSelectDay: setSelectedDay,
+                    sortByLetterboxd,
+                    setSortByLetterboxd
                   }),
               filtered.length > 0 && h('p', { className: 'screen-note' }, '~ : dimensions d’écran estimées. Capacités des salles et statut « Places disponibles / Complet » fournis par Pathé. Le paiement s’effectue directement sur la billetterie officielle Pathé / Institut de l’Image.'),
               activeTab === 'cinemas' && cinemas.filter((cinema) => isClosed(cinema) &&
