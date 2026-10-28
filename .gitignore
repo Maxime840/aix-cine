@@ -1,0 +1,14 @@
+# Captures et rapports de tests locaux
+.qa/
+
+# Dépendances / builds
+node_modules/
+dist/
+__pycache__/
+*.pyc
+
+# Système
+.DS_Store
+Thumbs.db
+desktop.ini
+

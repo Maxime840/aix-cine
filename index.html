@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aix-Ciné.info — Séances, Salles, Tailles d'écran & Billetterie à Aix-en-Provence</title>
+  <meta name="description" content="Toutes les séances de la semaine dans les 5 cinémas d'Aix-en-Provence (Le Renoir, Le Mazarin, Le Cézanne, Pathé Plan de Campagne, Institut de l'Image) avec numéro de salle, taille de l'écran en mètres et réservation." />
+
+  <!-- Polices modernes : Inter + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <meta name="theme-color" content="#0b0e14" />
+  <link rel="stylesheet" href="style.css?v=20261028-1920" />
+
+  <!-- React 18 Production -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <noscript>Activez JavaScript pour consulter les séances et les salles des cinémas d’Aix-en-Provence.</noscript>
+
+  <!-- Programmation générée toutes les heures par scripts/fetch_seances.py (GitHub Actions).
+       Le paramètre ?v= change toutes les 10 min pour éviter les données en cache. -->
+  <script>
+    (function () {
+      var v = Math.floor(Date.now() / 600000);
+      document.write('<script src="data/bundle.js?v=' + v + '"><\/script>');
+      document.write('<script src="app.js?v=' + v + '"><\/script>');
+    })();
+  </script>
+</body>
+</html>
