@@ -1,6 +1,6 @@
 {
   "week_label": "Du mercredi 28 octobre au mardi 3 novembre 2026",
-  "updated_at": "2026-10-28T21:26:48+01:00",
+  "updated_at": "2026-10-28T21:35:57+01:00",
   "days": [
     {
       "date": "2026-10-28",
@@ -800,7 +800,7 @@
       "poster_url": "posters/une-femme-aujourd-hui-54512.jpg",
       "poster_remote_url": "https://media.pathe.fr/movie/alex/HO00011544/poster/md/3/movie&uuid=2E373E0D-4C80-4110-B747-0C1FF83E1835",
       "poster_bg": "from-indigo-950 via-slate-900 to-emerald-950",
-      "ticket_url": "https://s.pathe.fr/fr/V3150S27107/booking",
+      "ticket_url": "https://s.pathe.fr/fr/V3150S27233/booking",
       "pathe_film_url": "https://www.pathe.fr/films/une-femme-aujourd-hui-54512",
       "synopsis": "Juliette, 30 ans, semble avoir tout pour elle : un poste prestigieux dans la finance, une belle maison, une vie rythmée par les voyages et les amours de passage. Lorsqu’elle est agressée par un collègue, son monde s’effondre. Juliette s'engage alors sur un nouveau chemin pour redonner un sens à sa vie.",
       "letterboxd_url": "https://letterboxd.com/search/Une+femme+aujourd%27hui+2026/",
@@ -11632,26 +11632,6 @@
       "film_payment_url": "https://s.pathe.fr/fr/V3151S28382/booking"
     },
     {
-      "id": "le-renoir-2026-10-28-2-21:10-karma-49700-0",
-      "cinema_id": "le-renoir",
-      "date": "2026-10-28",
-      "time": "21:10",
-      "end_time": "23:51",
-      "reservability_end": "2026-10-28T21:30:00+01:00",
-      "film_id": "karma-49700",
-      "salle": "2",
-      "seats_override": 138,
-      "seats_total": 138,
-      "seats_remaining": null,
-      "availability_status": "available",
-      "pathe_status": "available",
-      "version": "VF",
-      "note": null,
-      "price_full": 13.5,
-      "booking_url": "https://s.pathe.fr/fr/V3151S28294/booking",
-      "film_payment_url": "https://s.pathe.fr/fr/V3151S28294/booking"
-    },
-    {
       "id": "le-renoir-2026-10-29-2-17:20-karma-49700-0",
       "cinema_id": "le-renoir",
       "date": "2026-10-29",
@@ -13110,26 +13090,6 @@
       "price_full": 13.5,
       "booking_url": "https://s.pathe.fr/fr/V3150S27254/booking",
       "film_payment_url": "https://s.pathe.fr/fr/V3150S27254/booking"
-    },
-    {
-      "id": "le-mazarin-2026-10-28-2-21:15-une-femme-au-0",
-      "cinema_id": "le-mazarin",
-      "date": "2026-10-28",
-      "time": "21:15",
-      "end_time": "23:38",
-      "reservability_end": "2026-10-28T21:35:00+01:00",
-      "film_id": "une-femme-aujourd-hui-54512",
-      "salle": "2",
-      "seats_override": 64,
-      "seats_total": 64,
-      "seats_remaining": null,
-      "availability_status": "available",
-      "pathe_status": "available",
-      "version": "VF",
-      "note": null,
-      "price_full": 13.5,
-      "booking_url": "https://s.pathe.fr/fr/V3150S27107/booking",
-      "film_payment_url": "https://s.pathe.fr/fr/V3150S27107/booking"
     },
     {
       "id": "le-mazarin-2026-10-29-2-18:10-une-femme-au-0",
