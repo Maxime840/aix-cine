@@ -1,6 +1,6 @@
 {
   "week_label": "Du mercredi 28 octobre au mardi 3 novembre 2026",
-  "updated_at": "2026-10-28T19:27:58+01:00",
+  "updated_at": "2026-10-28T19:36:37+01:00",
   "days": [
     {
       "date": "2026-10-28",
@@ -114,7 +114,7 @@
       "poster_url": "posters/le-fantome-de-l-opera-46997.jpg",
       "poster_remote_url": "https://media.pathe.fr/movie/alex/HO00009137/poster/md/2/movie&uuid=BF927414-D9E5-41FA-956A-E12C30402FD2",
       "poster_bg": "from-zinc-900 via-neutral-900 to-amber-950",
-      "ticket_url": "https://s.pathe.fr/fr/V3120S200259/booking",
+      "ticket_url": "https://s.pathe.fr/fr/V3120S200278/booking",
       "pathe_film_url": "https://www.pathe.fr/films/le-fantome-de-l-opera-46997",
       "synopsis": "Dans le Paris d'aujourd'hui, Anastasia, jeune danseuse, intègre le prestigieux Opéra Garnier. Alors qu’elle répète l'Orpheus, un opéra maudit qui aurait été composé par le Fantôme de l'Opéra, elle tombe amoureuse d'un mystérieux pianiste. A l’approche de la première représentation, entre accidents inexpliqués et révélations troublantes, Anastasia se trouve plongée dans une histoire d'amour impossible, à la frontière du réel et du fantastique."
     },
@@ -1128,26 +1128,6 @@
       "price_full": 15.2,
       "booking_url": "https://s.pathe.fr/fr/V3120S196522/booking",
       "film_payment_url": "https://s.pathe.fr/fr/V3120S196522/booking"
-    },
-    {
-      "id": "pathe-plan-de-campagne-2026-10-28-18-19:15-le-fantome-d-0",
-      "cinema_id": "pathe-plan-de-campagne",
-      "date": "2026-10-28",
-      "time": "19:15",
-      "end_time": "21:49",
-      "reservability_end": "2026-10-28T19:35:00+01:00",
-      "film_id": "le-fantome-de-l-opera-46997",
-      "salle": "18",
-      "seats_override": 316,
-      "seats_total": 316,
-      "seats_remaining": null,
-      "availability_status": "available",
-      "pathe_status": "available",
-      "version": "VF",
-      "note": "IMAX Laser",
-      "price_full": 19.2,
-      "booking_url": "https://s.pathe.fr/fr/V3120S200259/booking",
-      "film_payment_url": "https://s.pathe.fr/fr/V3120S200259/booking"
     },
     {
       "id": "pathe-plan-de-campagne-2026-10-28-2-19:50-le-fantome-d-1",
@@ -11508,26 +11488,6 @@
       "price_full": 13.5,
       "booking_url": "https://s.pathe.fr/fr/V3151S28383/booking",
       "film_payment_url": "https://s.pathe.fr/fr/V3151S28383/booking"
-    },
-    {
-      "id": "le-renoir-2026-10-28-1-19:10-moulin-51624-0",
-      "cinema_id": "le-renoir",
-      "date": "2026-10-28",
-      "time": "19:10",
-      "end_time": "21:44",
-      "reservability_end": "2026-10-28T19:30:00+01:00",
-      "film_id": "moulin-51624",
-      "salle": "1",
-      "seats_override": 212,
-      "seats_total": 212,
-      "seats_remaining": null,
-      "availability_status": "available",
-      "pathe_status": "available",
-      "version": "VF",
-      "note": null,
-      "price_full": 13.5,
-      "booking_url": "https://s.pathe.fr/fr/V3151S28296/booking",
-      "film_payment_url": "https://s.pathe.fr/fr/V3151S28296/booking"
     },
     {
       "id": "le-renoir-2026-10-29-1-13:15-moulin-51624-0",
