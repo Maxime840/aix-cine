@@ -1,6 +1,6 @@
 {
   "week_label": "Du jeudi 29 octobre au mercredi 4 novembre 2026",
-  "updated_at": "2026-10-29T11:32:08+01:00",
+  "updated_at": "2026-10-29T11:57:12+01:00",
   "days": [
     {
       "date": "2026-10-29",
@@ -240,7 +240,7 @@
       "poster_url": "posters/le-mystere-lucy-lost-52436.jpg",
       "poster_remote_url": "https://media.pathe.fr/movie/alex/HO00011241/poster/md/3/movie&uuid=3444CEC8-7248-4FF1-8064-9ED3C3A66C54",
       "poster_bg": "from-teal-950 via-cyan-950 to-blue-950",
-      "ticket_url": "https://s.pathe.fr/fr/V3120S200790/booking",
+      "ticket_url": "https://s.pathe.fr/fr/V3120S200802/booking",
       "pathe_film_url": "https://www.pathe.fr/films/le-mystere-lucy-lost-52436",
       "synopsis": "Lucy vit avec sa famille dans un village sur une petite île isolée. Ses dons extraordinaires suscitent le rejet des habitants. Lorsqu'elle rencontre Milly - une petite fille qu'elle seule peut voir - Lucy embarque dans une grande aventure pour percer le secret de ses mystérieux pouvoirs.",
       "letterboxd_url": "https://letterboxd.com/film/lucy-lost/",
@@ -4105,26 +4105,6 @@
       "price_full": 15.2,
       "booking_url": "https://s.pathe.fr/fr/V3120S200749/booking",
       "film_payment_url": "https://s.pathe.fr/fr/V3120S200749/booking"
-    },
-    {
-      "id": "pathe-plan-de-campagne-2026-10-29-9-11:20-le-mystere-l-0",
-      "cinema_id": "pathe-plan-de-campagne",
-      "date": "2026-10-29",
-      "time": "11:20",
-      "end_time": "13:09",
-      "reservability_end": "2026-10-29T11:40:00+01:00",
-      "film_id": "le-mystere-lucy-lost-52436",
-      "salle": "9",
-      "seats_override": 185,
-      "seats_total": 185,
-      "seats_remaining": null,
-      "availability_status": "available",
-      "pathe_status": "available",
-      "version": "VF",
-      "note": null,
-      "price_full": 15.2,
-      "booking_url": "https://s.pathe.fr/fr/V3120S200790/booking",
-      "film_payment_url": "https://s.pathe.fr/fr/V3120S200790/booking"
     },
     {
       "id": "pathe-plan-de-campagne-2026-10-29-9-13:30-le-mystere-l-1",
