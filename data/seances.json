@@ -1,6 +1,6 @@
 {
   "week_label": "Du jeudi 29 octobre au mercredi 4 novembre 2026",
-  "updated_at": "2026-10-29T10:12:21+01:00",
+  "updated_at": "2026-10-29T10:30:15+01:00",
   "days": [
     {
       "date": "2026-10-29",
@@ -184,7 +184,7 @@
       "poster_url": "posters/moulin-51624.jpg",
       "poster_remote_url": "https://media.pathe.fr/movie/alex/HO00010904/poster/md/2/movie&uuid=DC84DC6B-69FE-4DA1-A56B-A771FAD87C52",
       "poster_bg": "from-sky-950 via-slate-950 to-indigo-950",
-      "ticket_url": "https://s.pathe.fr/fr/V3120S200781/booking",
+      "ticket_url": "https://s.pathe.fr/fr/V3120S200799/booking",
       "pathe_film_url": "https://www.pathe.fr/films/moulin-51624",
       "synopsis": "Jean Moulin est parachuté en France occupée pour unifier les réseaux de la Résistance, sous l’égide du général de Gaulle. Malgré ses efforts pour rester dans l’ombre, Moulin est trahi puis livré à la Gestapo à Lyon, dirigée par l’impitoyable Klaus Barbie. Torturé sans relâche, il ne cède jamais. Sa détermination silencieuse contribuera à galvaniser les forces de la Résistance et à faire naître un nouvel esprit de combat et de liberté en France…",
       "letterboxd_url": "https://letterboxd.com/film/moulin/",
@@ -492,7 +492,7 @@
       "poster_url": "posters/les-miserables-48629.jpg",
       "poster_remote_url": "https://media.pathe.fr/movie/alex/HO00009813/poster/md/1/movie&uuid=61F7DC8A-774D-43BA-B717-83D31322DAC3",
       "poster_bg": "from-violet-950 via-slate-950 to-zinc-950",
-      "ticket_url": "https://s.pathe.fr/fr/V3120S200776/booking",
+      "ticket_url": "https://s.pathe.fr/fr/V3120S200796/booking",
       "pathe_film_url": "https://www.pathe.fr/films/les-miserables-48629",
       "synopsis": "Libéré après 19 ans de bagne pour le vol d’un pain, Jean Valjean décide de changer de vie et de faire le bien autour de lui. Sous une fausse identité, il devient avec le temps un notable respecté de tous. Venant en aide à Fantine, une ouvrière mourante, il promet de sauver sa fille, Cosette, des griffes des cruels Thénardier. Mais son passé le rattrape : l’inspecteur Javert, un policier implacable au passé lui aussi tourmenté, le traque sans relâche afin de le renvoyer au bagne. Dans un Paris en pleine révolution, Valjean doit lutter pour protéger Cosette et achever sa rédemption, entre sacrifices et quête de justice.",
       "letterboxd_url": "https://letterboxd.com/film/les-miserables-2026/",
@@ -3065,26 +3065,6 @@
       "price_full": 19.2,
       "booking_url": "https://s.pathe.fr/fr/V3120S200761/booking",
       "film_payment_url": "https://s.pathe.fr/fr/V3120S200761/booking"
-    },
-    {
-      "id": "pathe-plan-de-campagne-2026-10-29-2-10:10-moulin-51624-0",
-      "cinema_id": "pathe-plan-de-campagne",
-      "date": "2026-10-29",
-      "time": "10:10",
-      "end_time": "12:44",
-      "reservability_end": "2026-10-29T10:30:00+01:00",
-      "film_id": "moulin-51624",
-      "salle": "2",
-      "seats_override": 450,
-      "seats_total": 450,
-      "seats_remaining": null,
-      "availability_status": "available",
-      "pathe_status": "available",
-      "version": "VF",
-      "note": null,
-      "price_full": 15.2,
-      "booking_url": "https://s.pathe.fr/fr/V3120S200781/booking",
-      "film_payment_url": "https://s.pathe.fr/fr/V3120S200781/booking"
     },
     {
       "id": "pathe-plan-de-campagne-2026-10-29-2-13:10-moulin-51624-1",
@@ -8345,26 +8325,6 @@
       "price_full": 15.2,
       "booking_url": "https://s.pathe.fr/fr/V3120S200771/booking",
       "film_payment_url": "https://s.pathe.fr/fr/V3120S200771/booking"
-    },
-    {
-      "id": "pathe-plan-de-campagne-2026-10-29-4-10:10-les-miserabl-0",
-      "cinema_id": "pathe-plan-de-campagne",
-      "date": "2026-10-29",
-      "time": "10:10",
-      "end_time": "13:28",
-      "reservability_end": "2026-10-29T10:30:00+01:00",
-      "film_id": "les-miserables-48629",
-      "salle": "4",
-      "seats_override": 273,
-      "seats_total": 273,
-      "seats_remaining": null,
-      "availability_status": "available",
-      "pathe_status": "available",
-      "version": "VF",
-      "note": null,
-      "price_full": 15.2,
-      "booking_url": "https://s.pathe.fr/fr/V3120S200776/booking",
-      "film_payment_url": "https://s.pathe.fr/fr/V3120S200776/booking"
     },
     {
       "id": "pathe-plan-de-campagne-2026-10-29-16-13:15-les-miserabl-1",
