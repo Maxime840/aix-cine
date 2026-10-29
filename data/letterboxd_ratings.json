@@ -699,42 +699,6 @@
     "film_fingerprint": "garance|2026|jeanne herry",
     "requested_url": "https://letterboxd.com/film/another-day-2026/"
   },
-  "portrait-dorian-gray": {
-    "letterboxd_url": "https://letterboxd.com/film/the-picture-of-dorian-gray/",
-    "letterboxd_rating": 3.59,
-    "rating_count": 18794,
-    "source": "json_ld",
-    "title": "The Picture of Dorian Gray",
-    "year": 1945,
-    "directors": [
-      "Albert Lewin"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-10-28T20:46:20+00:00",
-    "checked_at": "2026-10-28T20:46:20+00:00",
-    "film_fingerprint": "le portrait de dorian gray|1945|albert lewin",
-    "requested_url": "https://letterboxd.com/film/the-picture-of-dorian-gray/"
-  },
-  "chambre-des-tortures": {
-    "letterboxd_url": "https://letterboxd.com/film/the-pit-and-the-pendulum-1961/",
-    "letterboxd_rating": 3.53,
-    "rating_count": 27786,
-    "source": "json_ld",
-    "title": "The Pit and the Pendulum",
-    "year": 1961,
-    "directors": [
-      "Roger Corman"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-10-28T20:46:20+00:00",
-    "checked_at": "2026-10-28T20:46:20+00:00",
-    "film_fingerprint": "la chambre des tortures|1961|roger corman",
-    "requested_url": "https://letterboxd.com/film/pit-and-the-pendulum/"
-  },
   "les-innocents-1961": {
     "letterboxd_url": "https://letterboxd.com/film/the-innocents/",
     "letterboxd_rating": 4.12,
