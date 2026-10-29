@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "update-seances": "python scripts/fetch_seances.py"
+    "update-seances": "python scripts/fetch_seances.py",
+    "update-letterboxd": "python scripts/update_letterboxd.py"
   },
   "dependencies": {
     "lucide-react": "^0.454.0",

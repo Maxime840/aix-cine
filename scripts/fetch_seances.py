@@ -554,25 +554,15 @@ def main():
     used = {s["film_id"] for s in seances}
     films = {k: v for k, v in films.items() if k in used}
 
-    # Enrichir chaque film avec sa note et son lien Letterboxd
-    lb_cache_file = ROOT_DIR / "data" / "letterboxd_ratings.json"
-    lb_cache = {}
-    if lb_cache_file.exists():
-        try:
-            lb_cache = json.loads(lb_cache_file.read_text(encoding="utf-8"))
-        except Exception:
-            pass
-
-    for fid, f_obj in films.items():
-        lb_info = lb_cache.get(fid) or {}
-        if lb_info.get("letterboxd_url"):
-            f_obj["letterboxd_url"] = lb_info["letterboxd_url"]
-            f_obj["letterboxd_rating"] = lb_info.get("letterboxd_rating")
-        else:
-            q = f"{f_obj.get('title', fid)} {f_obj.get('year', '')}".strip()
-            encoded = urllib.parse.quote_plus(q)
-            f_obj["letterboxd_url"] = f"https://letterboxd.com/search/{encoded}/"
-            f_obj["letterboxd_rating"] = None
+    # Notes collectées dans les métadonnées des fiches directes, avec identité,
+    # provenance et date vérifiées. Le cache évite de solliciter Letterboxd à chaque heure.
+    try:
+        from .letterboxd import enrich_films
+    except ImportError:
+        from letterboxd import enrich_films
+    lb_cache_file = DATA_DIR / "letterboxd_ratings.json"
+    lb_cache = enrich_films(films, refresh="--offline" not in sys.argv, cache_path=lb_cache_file)
+    lb_cache_file.write_text(json.dumps(lb_cache, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     first, last = NOW, NOW + timedelta(days=len(DAYS) - 1)
     payload = {

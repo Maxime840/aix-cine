@@ -211,6 +211,7 @@
   function FilmInfo({ film, session, fallbackUrl, showDayInButton, mobile = false }) {
     const href = (session && session.booking_url) || fallbackUrl || '#';
     const isDirectCheckout = String(href || '').includes('s.pathe.fr/');
+    const bookingCinema = session && cinemasById[session.cinema_id];
     const dayShort = session && daysByDate[session.date] ? daysByDate[session.date].short : '';
     const sessionLabel = session
       ? `${showDayInButton && dayShort ? `${dayShort} ` : ''}${session.time}`
@@ -233,8 +234,8 @@
         h('div', { className: 'film-actions-bar' },
           h('a', { ...external, href, className: 'film-booking secondary-link' },
             isDirectCheckout
-              ? `Paiement Pathé (${sessionLabel || 'direct'})`
-              : `Billetterie officielle${sessionLabel ? ` (${sessionLabel})` : ''}`,
+              ? `Payer · ${bookingCinema ? bookingCinema.name : 'Pathé'} (${sessionLabel || 'direct'})`
+              : `Réserver${bookingCinema ? ` · ${bookingCinema.name}` : ''}${sessionLabel ? ` (${sessionLabel})` : ''}`,
             h(Icon, { name: 'arrow' })))));
   }
 
@@ -301,15 +302,16 @@
     const weekFilmsCount = new Set((allCinemaWeekSessions || []).map((s) => s.film_id)).size;
     const extraWeekFilms = Math.max(0, weekFilmsCount - dayFilmsCount);
 
-    return h('section', { className: `cinema-section${cinema.id === 'le-renoir' ? ' cinema-section--editorial' : ''}`, 'aria-label': cinema.name },
+    return h('section', { className: 'cinema-section', 'aria-label': cinema.name, 'data-cinema-id': cinema.id },
+      h('div', { className: 'cinema-banner' },
+        h('div', { className: 'cinema-banner-name' }, h(Icon, { name: 'film' }), h('h2', null, cinema.name)),
+        h('span', { className: 'count-badge' }, plural(filtered.length, 'séance'))),
       h('div', { className: 'cinema-heading' },
         h('div', null,
-          h('div', { className: 'cinema-title-line' }, h('h2', null, cinema.name),
-            h('span', { className: 'subtle-badge' }, cinema.group)),
+          h('span', { className: 'subtle-badge' }, cinema.group),
           h('p', { className: 'cinema-address' }, h(Icon, { name: 'pin' }),
             `${cinema.address} · ${plural(cinema.total_rooms, 'salle')} · ${cinema.total_seats} fauteuils`)),
         h('div', { className: 'cinema-actions' },
-          h('span', { className: 'count-badge' }, plural(filtered.length, 'séance')),
           h('a', { ...external, href: cinema.url, className: 'secondary-link' }, 'Site du cinéma', h(Icon, { name: 'arrow' })))),
       h('details', { className: 'rooms-details' },
         h('summary', null, h('span', { className: 'details-label' }, h(Icon, { name: 'screen' }),
@@ -326,6 +328,7 @@
             return h('article', { key: filmId, className: 'film-row' },
               h(FilmInfo, { film, session: bestSession, fallbackUrl: cinema.url, showDayInButton: selectedDay === 'all', mobile }),
               h('div', { className: 'film-sessions' },
+                h('p', { className: 'film-cinema-context' }, h(Icon, { name: 'pin' }), `Séances · ${cinema.name}`),
                 Array.from(groupBy(filmSessions, 'date'), ([date, dateSessions]) =>
                   h('div', { key: date },
                     selectedDay === 'all' && h('h4', { className: 'session-date' }, (daysByDate[date] || {}).label || date),
@@ -345,7 +348,11 @@
     const maxScreen = Math.max(0, ...filmSessions.map((session) => (roomFor(session) || {}).screen_width_m || 0));
     const availableCount = filmSessions.filter((s) => getSeatsInfo(s).status !== 'soldout').length;
 
-    return h('article', { className: 'film-tile' },
+    return h('article', { className: 'film-tile', 'data-film-id': filmId },
+      h('div', { className: 'film-locations', role: 'group', 'aria-label': 'Cinémas de diffusion' },
+        h('p', { className: 'film-locations-label' }, h(Icon, { name: 'pin' }), 'À voir dans'),
+        h('ul', { className: 'film-locations-list' }, Array.from(cinemaGroups.keys(), (cinemaId) =>
+          h('li', { key: cinemaId, 'data-cinema-id': cinemaId }, cinemasById[cinemaId].name)))),
       h(FilmInfo, {
         film,
         session: bestOverall,

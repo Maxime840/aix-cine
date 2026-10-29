@@ -1999,86 +1999,6 @@ summary::-webkit-details-marker {
   }
 }
 
-/* Essai Le Renoir : titres de programme et cadre simplifié.
-   Les cartes horaires et tous les contrôles conservent leurs styles communs. */
-.cinema-section--editorial {
-  border:0;
-  border-top:2px solid var(--accent);
-  border-radius:0;
-  background:var(--surface);
-}
-
-.cinema-section--editorial .cinema-title-line {
-  align-items:baseline;
-  gap:8px 14px;
-}
-
-.cinema-section--editorial .cinema-title-line h2 {
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:32px;
-  font-weight:400;
-  letter-spacing:-.6px;
-  line-height:1.15;
-  color:#f4eee4;
-}
-
-.cinema-section--editorial .cinema-title-line .subtle-badge {
-  border:0;
-  border-radius:0;
-  padding:0;
-  font-size:12px;
-  color:var(--muted);
-}
-
-.cinema-section--editorial .cinema-address {
-  font-size:13px;
-}
-
-.cinema-section--editorial > .rooms-details {
-  border-top:0;
-  border-bottom-color:#3b4555;
-  background:transparent;
-}
-
-.cinema-section--editorial > .rooms-details > summary {
-  font-size:13px;
-}
-
-.cinema-section--editorial .film-row + .film-row {
-  border-top-color:#3b4555;
-}
-
-.cinema-section--editorial .film-title {
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:21px;
-  font-weight:400;
-  line-height:1.3;
-  letter-spacing:0;
-}
-
-.cinema-section--editorial .genre-list > .genre-badge {
-  border:0;
-  border-radius:0;
-  padding:0;
-  background:transparent;
-  font-size:12px;
-}
-
-.cinema-section--editorial .genre-list > .genre-badge + .genre-badge::before {
-  content:"·";
-  margin-right:5px;
-}
-
-@media(max-width:767px) {
-  .cinema-section--editorial .cinema-title-line h2 {
-    font-size:28px;
-  }
-  .cinema-section--editorial .film-title {
-    font-size:20px;
-  }
-}
-
-
 /* Option Places restantes & Jauge de disponibilité */
 .quick-actions {
   display:flex;
@@ -3055,5 +2975,149 @@ html {
   }
   .day-button {
     min-height:40px;
+  }
+}
+
+/* Repère de cinéma commun, visible pendant la consultation des séances. */
+.cinema-section {
+  overflow:visible;
+}
+
+.cinema-banner {
+  position:sticky;
+  top:var(--header-height, 120px);
+  z-index:20;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:13px 22px;
+  border-top:2px solid var(--accent);
+  border-bottom:1px solid #3b485b;
+  border-radius:calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
+  background:#1b2635;
+  box-shadow:0 5px 12px #0003;
+}
+
+.cinema-banner-name {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.cinema-banner-name > .icon {
+  color:var(--accent);
+}
+
+.cinema-banner h2 {
+  margin:0;
+  font-family:inherit;
+  font-size:21px;
+  font-weight:750;
+  letter-spacing:-.4px;
+  line-height:1.3;
+  color:var(--text);
+  overflow-wrap:anywhere;
+}
+
+.cinema-banner .count-badge {
+  flex-shrink:0;
+  padding:4px 8px;
+  border:1px solid #415168;
+  border-radius:6px;
+  color:#d3dce9;
+  font-size:13px;
+}
+
+.cinema-section .cinema-heading {
+  padding-block:14px;
+}
+
+.cinema-section .cinema-heading > div:first-child {
+  min-width:0;
+}
+
+.film-cinema-context {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin:0 0 12px;
+  color:#c9d5e5;
+  font-size:13px;
+  font-weight:600;
+}
+
+.film-cinema-context .icon {
+  width:15px;
+  height:15px;
+  color:var(--accent);
+}
+
+.cinema-section :is(.film-row,a,button,summary) {
+  scroll-margin-top:84px;
+}
+
+.film-locations {
+  margin-bottom:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid #344155;
+}
+
+.film-locations-label {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:6px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.film-locations-label .icon {
+  width:14px;
+  height:14px;
+  color:var(--accent);
+}
+
+.film-locations-list {
+  display:grid;
+  gap:3px;
+  margin:0;
+  padding:0;
+  list-style:none;
+  color:#e1e9f4;
+  font-size:14px;
+  font-weight:650;
+  line-height:1.4;
+}
+
+@media(max-width:767px) {
+  .cinema-banner {
+    gap:10px;
+    padding:12px;
+    border-top-left-radius:11px;
+    border-top-right-radius:11px;
+  }
+  .cinema-banner-name {
+    gap:8px;
+  }
+  .cinema-banner h2 {
+    font-size:18px;
+    line-height:1.3;
+  }
+  .cinema-banner .count-badge {
+    padding:4px 6px;
+    font-size:12px;
+  }
+  .cinema-section .cinema-heading {
+    padding-block:10px;
+    gap:6px;
+  }
+  .cinema-section .cinema-actions {
+    justify-content:flex-end;
+  }
+  .film-locations {
+    margin-bottom:12px;
+    padding-bottom:10px;
   }
 }
