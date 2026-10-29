@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  const { useEffect, useMemo, useState } = React;
+  const { useEffect, useMemo, useRef, useState } = React;
   const h = React.createElement;
   const data = window.__AIX_CINE_DATA__ || {};
   const cinemas = (data.salles || {}).cinemas || [];
@@ -106,10 +106,43 @@
     const end = hours * 60 + mins + minutes;
     return `${String(Math.floor(end / 60) % 24).padStart(2, '0')}:${String(end % 60).padStart(2, '0')}`;
   }
-  function screenClass(room) {
-    return `screen-badge${room && room.size_category === 'imax' ? ' is-imax' :
-      room && room.screen_width_m >= 14 ? ' is-large' : ''}`;
+  const SCREEN_MAX_M = 25;
+  function screenTier(room) {
+    if (!room || !room.screen_width_m) return null;
+    const byCategory = {
+      small: { key: 'small', label: 'Écran intime' },
+      medium: { key: 'medium', label: 'Écran moyen' },
+      'medium-plus': { key: 'medium-plus', label: 'Bel écran' },
+      large: { key: 'large', label: 'Grand écran' },
+      xlarge: { key: 'xlarge', label: 'Très grand écran' },
+      imax: { key: 'imax', label: 'IMAX' }
+    };
+    if (byCategory[room.size_category]) return byCategory[room.size_category];
+    const width = room.screen_width_m;
+    if (width >= 20) return byCategory.xlarge;
+    if (width >= 14) return byCategory.large;
+    if (width >= 10) return byCategory['medium-plus'];
+    if (width >= 7) return byCategory.medium;
+    return byCategory.small;
   }
+
+  function ScreenScale({ room }) {
+    const tier = screenTier(room);
+    if (!tier) {
+      return h('span', { className: 'screen-badge' }, h(Icon, { name: 'screen' }), dimensions(room));
+    }
+    const width = Number(room.screen_width_m);
+    const pct = Math.max(18, Math.min(100, Math.round((width / SCREEN_MAX_M) * 100)));
+    const label = `${tier.label} : ${dimensions(room)}${room.screen_estimated ? ' (estimées)' : ''}`;
+    return h('span', { className: `screen-scale is-${tier.key}`, role: 'img', 'aria-label': label,
+      title: room.screen_estimated ? 'Dimensions estimées' : 'Dimensions communiquées' },
+      h('span', { className: 'screen-scale-head' },
+        h('span', { className: 'screen-scale-dims' }, h(Icon, { name: 'screen' }), dimensions(room)),
+        h('span', { className: 'screen-scale-tier' }, tier.label)),
+      h('span', { className: 'screen-scale-track', 'aria-hidden': true },
+        h('span', { className: 'screen-scale-fill', style: { width: `${pct}%` } })));
+  }
+
   function groupBy(list, field) {
     const groups = new Map();
     list.forEach((item) => {
@@ -124,54 +157,58 @@
     return String(text || '').replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
   }
 
-  function LetterboxdBadge({ film, compact = false }) {
-    if (!film) return null;
-    const url = film.letterboxd_url || `https://letterboxd.com/search/${encodeURIComponent(film.title)}/`;
-    const hasRating = typeof film.letterboxd_rating === 'number' && film.letterboxd_rating > 0;
+  function letterboxdRating(film) {
+    const score = film && film.letterboxd_rating;
+    return film && film.letterboxd_verified === true &&
+      ['json_ld', 'twitter_card'].includes(film.letterboxd_source) &&
+      Number.isFinite(score) && score > 0 && score <= 5 ? score : null;
+  }
 
-    return h('a', {
-      ...external,
-      href: url,
-      className: `letterboxd-badge${compact ? ' is-compact' : ''}`,
-      title: hasRating
-        ? `Consulter la fiche Letterboxd de « ${film.title} » (note moyenne ${film.letterboxd_rating.toFixed(1)} / 5)`
-        : `Rechercher « ${film.title} » sur Letterboxd`
-    },
-      h('span', { className: 'lb-dots', 'aria-hidden': true },
-        h('span', { className: 'lb-dot lb-dot-orange' }),
-        h('span', { className: 'lb-dot lb-dot-green' }),
-        h('span', { className: 'lb-dot lb-dot-blue' })),
-      h('span', { className: 'lb-name' }, 'Letterboxd'),
-      hasRating && h('span', { className: 'lb-score' }, `★ ${film.letterboxd_rating.toFixed(1)}`),
-      h(Icon, { name: 'arrow', className: 'lb-arrow' }));
+  function LetterboxdMark() {
+    return h('span', { className: 'lb-dots', 'aria-hidden': true },
+      h('span', { className: 'lb-dot lb-dot-orange' }),
+      h('span', { className: 'lb-dot lb-dot-green' }),
+      h('span', { className: 'lb-dot lb-dot-blue' }));
+  }
+
+  function LetterboxdLink({ film }) {
+    if (!film) return null;
+    const direct = film.letterboxd_verified === true &&
+      /^https:\/\/letterboxd\.com\/film\/[a-z0-9][a-z0-9-]*\/$/.test(film.letterboxd_url || '');
+    const href = direct ? film.letterboxd_url :
+      `https://letterboxd.com/search/${encodeURIComponent([film.title, film.year].filter(Boolean).join(' '))}/`;
+    const rating = direct ? letterboxdRating(film) : null;
+    const formatted = rating === null ? '' : rating.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const count = Number(film.letterboxd_rating_count);
+    const details = [direct ? `Fiche Letterboxd de « ${film.title} »` : `Rechercher « ${film.title} » sur Letterboxd`,
+      rating !== null && `Moyenne : ${formatted} sur 5`,
+      rating !== null && count > 0 && `${count.toLocaleString('fr-FR')} évaluations`,
+      film.letterboxd_fetched_at && !Number.isNaN(Date.parse(film.letterboxd_fetched_at)) &&
+        `Note relevée le ${new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', dateStyle: 'medium' }).format(new Date(film.letterboxd_fetched_at))}`,
+      film.letterboxd_status === 'stale' && 'Dernière note connue', 'Nouvel onglet'].filter(Boolean).join(' · ');
+    return h('a', { ...external, href, className: `letterboxd-link${direct ? '' : ' is-search'}`,
+      title: details, 'aria-label': details },
+      h(LetterboxdMark), h('span', { className: 'lb-name' }, direct ? 'Letterboxd' : 'Rechercher sur Letterboxd'),
+      rating !== null
+        ? h('span', { className: 'lb-score' }, h('strong', null, formatted), h('span', { className: 'lb-scale' }, ' / 5'))
+        : direct && h('span', { className: 'lb-unrated' }, 'Note indisponible'),
+      h(Icon, { name: 'arrow' }));
   }
 
   function FilmPoster({ film, href }) {
     const [failed, setFailed] = useState(false);
-    const hasLb = typeof film.letterboxd_rating === 'number' && film.letterboxd_rating > 0;
     return h('div', { className: 'film-poster-container' },
       h('a', { ...external, href, className: 'film-poster',
         'aria-label': `Billetterie officielle pour ${film.title} (nouvel onglet)` },
         film.poster_url && !failed
           ? h('img', { src: film.poster_url, alt: `Affiche de ${film.title}`, className: 'poster-image',
-              loading: 'lazy', onError: () => setFailed(true) })
+              loading: 'lazy', decoding: 'async', width: 104, height: 156, onError: () => setFailed(true) })
           : h('span', { className: 'poster-fallback' }, h(Icon, { name: 'film' }), film.title),
         h('span', { className: 'poster-badges' },
-          film.is_new && h('span', { className: 'new-badge' }, 'Nouveau'))),
-      hasLb && h('a', {
-        ...external,
-        href: film.letterboxd_url || `https://letterboxd.com/search/${encodeURIComponent(film.title)}/`,
-        className: 'poster-lb-tag',
-        title: `Note Letterboxd : ${film.letterboxd_rating.toFixed(1)} / 5 (ouvrir la fiche)`
-      },
-        h('span', { className: 'lb-dots is-micro', 'aria-hidden': true },
-          h('span', { className: 'lb-dot lb-dot-orange' }),
-          h('span', { className: 'lb-dot lb-dot-green' }),
-          h('span', { className: 'lb-dot lb-dot-blue' })),
-        `★ ${film.letterboxd_rating.toFixed(1)}`));
+          film.is_new && h('span', { className: 'new-badge' }, 'Nouveau'))));
   }
 
-  function FilmInfo({ film, session, fallbackUrl, showDayInButton }) {
+  function FilmInfo({ film, session, fallbackUrl, showDayInButton, mobile = false }) {
     const href = (session && session.booking_url) || fallbackUrl || '#';
     const isDirectCheckout = String(href || '').includes('s.pathe.fr/');
     const dayShort = session && daysByDate[session.date] ? daysByDate[session.date].short : '';
@@ -185,29 +222,19 @@
       h('div', { className: 'film-copy' },
         h('h3', null, h('a', { ...external, href, className: 'film-title' }, film.title)),
         h('p', { className: 'film-meta' }, [film.director && `De ${film.director}`, duration(film.duration_min), film.year].filter(Boolean).join(' · ')),
+        h(LetterboxdLink, { film }),
         h('div', { className: 'genre-list' },
-          (film.genres || []).map((genre) => h('span', { key: genre, className: 'genre-badge' }, genre)),
-          h(LetterboxdBadge, { film, compact: true })),
-        synopsisText && h('p', { className: 'film-synopsis', title: synopsisText }, synopsisText),
+          (film.genres || []).map((genre) => h('span', { key: genre, className: 'genre-badge' }, genre))),
+        synopsisText && (mobile
+          ? h('details', { className: 'film-synopsis-details' },
+              h('summary', null, 'Synopsis', h(Icon, { name: 'chevron' })),
+              h('p', { className: 'film-synopsis' }, synopsisText))
+          : h('p', { className: 'film-synopsis', title: synopsisText }, synopsisText)),
         h('div', { className: 'film-actions-bar' },
           h('a', { ...external, href, className: 'film-booking secondary-link' },
             isDirectCheckout
               ? `Paiement Pathé (${sessionLabel || 'direct'})`
               : `Billetterie officielle${sessionLabel ? ` (${sessionLabel})` : ''}`,
-            h(Icon, { name: 'arrow' })),
-          h('a', {
-            ...external,
-            href: film.letterboxd_url || `https://letterboxd.com/search/${encodeURIComponent(film.title)}/`,
-            className: 'film-lb-link secondary-link',
-            title: `Ouvrir la fiche Letterboxd de « ${film.title} »`
-          },
-            h('span', { className: 'lb-dots is-micro', 'aria-hidden': true },
-              h('span', { className: 'lb-dot lb-dot-orange' }),
-              h('span', { className: 'lb-dot lb-dot-green' }),
-              h('span', { className: 'lb-dot lb-dot-blue' })),
-            typeof film.letterboxd_rating === 'number'
-              ? `Fiche Letterboxd (★ ${film.letterboxd_rating.toFixed(1)})`
-              : 'Fiche Letterboxd',
             h(Icon, { name: 'arrow' })))));
   }
 
@@ -220,7 +247,8 @@
       h('div', { className: 'seats-remaining-row' },
         h('span', { className: 'seats-dot' }),
         h('span', { className: 'seats-remaining-text' },
-          status === 'soldout' ? 'Complet' : 'Places disponibles')));
+          h('span', { className: 'availability-long' }, status === 'soldout' ? 'Complet' : 'Places disponibles'),
+          h('span', { className: 'availability-short' }, status === 'soldout' ? 'Complet' : 'Disponible'))));
   }
 
   function ShowtimeCard({ session, film, showDayBadge = false }) {
@@ -247,10 +275,10 @@
         h('span', { className: `version-badge${session.version === 'VOST' ? ' is-vost' : ''}` }, session.version)),
       h('div', { className: 'showtime-room' }, h('strong', null, name),
         seats && h('span', { className: 'seat-count', title: 'Capacité totale de la salle' }, `${seats} pl.`)),
-      h(SeatsBadge, { session }),
-      h('span', { className: screenClass(room), title: room && room.screen_estimated ? 'Dimensions estimées' : 'Dimensions communiquées' },
-        h(Icon, { name: 'screen' }), dimensions(room)),
-      room && h('span', { className: 'showtime-tech' }, [room.projection, room.sound].filter(Boolean).join(' · ')),
+      h(ScreenScale, { room }),
+      h('div', { className: 'showtime-meta' },
+        h(SeatsBadge, { session }),
+        room && h('span', { className: 'showtime-tech' }, [room.projection, room.sound].filter(Boolean).join(' · '))),
       session.note && h('span', { className: 'session-note' }, session.note),
       h('div', { className: 'showtime-bottom' },
         h('span', { className: 'price-label' }, price > 0 ? `${price.toFixed(2).replace('.', ',')} €` : 'Tarif sur le site'),
@@ -264,11 +292,11 @@
       Object.values(cinema.salles || {}).sort((a, b) => b.screen_width_m - a.screen_width_m).map((room) =>
         h('div', { key: room.number, className: 'room-mini' },
           h('strong', null, roomName(room)),
-          h('span', { className: screenClass(room) }, dimensions(room)),
+          h(ScreenScale, { room }),
           h('span', { className: 'room-specs' }, `${room.seats} fauteuils · ${room.projection} · ${room.sound}`))));
   }
 
-  function CinemaSection({ cinema, filtered, allCinemaWeekSessions, selectedDay, onSelectDay }) {
+  function CinemaSection({ cinema, filtered, allCinemaWeekSessions, selectedDay, onSelectDay, mobile }) {
     const dayFilmsCount = new Set(filtered.map((s) => s.film_id)).size;
     const weekFilmsCount = new Set((allCinemaWeekSessions || []).map((s) => s.film_id)).size;
     const extraWeekFilms = Math.max(0, weekFilmsCount - dayFilmsCount);
@@ -296,7 +324,7 @@
             const film = films[filmId] || { title: filmId };
             const bestSession = nextBookableSession(filmSessions);
             return h('article', { key: filmId, className: 'film-row' },
-              h(FilmInfo, { film, session: bestSession, fallbackUrl: cinema.url, showDayInButton: selectedDay === 'all' }),
+              h(FilmInfo, { film, session: bestSession, fallbackUrl: cinema.url, showDayInButton: selectedDay === 'all', mobile }),
               h('div', { className: 'film-sessions' },
                 Array.from(groupBy(filmSessions, 'date'), ([date, dateSessions]) =>
                   h('div', { key: date },
@@ -310,7 +338,7 @@
           `Afficher toute la semaine (${weekFilmsCount} films) →`)));
   }
 
-  function FilmTile({ filmId, filmSessions, showDayInLinks }) {
+  function FilmTile({ filmId, filmSessions, showDayInLinks, mobile }) {
     const film = films[filmId] || { title: filmId };
     const cinemaGroups = groupBy(filmSessions, 'cinema_id');
     const bestOverall = nextBookableSession(filmSessions);
@@ -322,7 +350,8 @@
         film,
         session: bestOverall,
         fallbackUrl: bestOverall ? cinemasById[bestOverall.cinema_id].url : '#',
-        showDayInButton: showDayInLinks
+        showDayInButton: showDayInLinks,
+        mobile
       }),
       bestOverall && h('div', { className: 'film-tile-seats' },
         h(SeatsBadge, { session: bestOverall })),
@@ -344,11 +373,11 @@
         })));
   }
 
-  function FilmGallery({ filtered, otherWeekSessions, selectedDay, onSelectDay, sortByLetterboxd, setSortByLetterboxd }) {
+  function FilmGallery({ filtered, otherWeekSessions, selectedDay, onSelectDay, sortByLetterboxd, setSortByLetterboxd, mobile }) {
     const sorter = (a, b) => {
       if (sortByLetterboxd) {
-        const ra = (films[a[0]] || {}).letterboxd_rating || 0;
-        const rb = (films[b[0]] || {}).letterboxd_rating || 0;
+        const ra = letterboxdRating(films[a[0]]) ?? -1;
+        const rb = letterboxdRating(films[b[0]]) ?? -1;
         if (rb !== ra) return rb - ra;
       }
       return b[1].length - a[1].length;
@@ -364,16 +393,17 @@
           type: 'button',
           className: `letterboxd-sort-button${sortByLetterboxd ? ' is-active' : ''}`,
           onClick: () => setSortByLetterboxd(!sortByLetterboxd),
-          title: 'Classer les films du mieux noté au moins bien noté sur Letterboxd'
+          'aria-pressed': sortByLetterboxd,
+          title: 'Classer par note Letterboxd vérifiée ; les films sans note apparaissent en dernier'
         },
           h('span', { className: 'lb-dots', 'aria-hidden': true },
             h('span', { className: 'lb-dot lb-dot-orange' }),
             h('span', { className: 'lb-dot lb-dot-green' }),
             h('span', { className: 'lb-dot lb-dot-blue' })),
-          sortByLetterboxd ? 'Tri : Mieux notés Letterboxd (★ ↓)' : 'Trier par note Letterboxd')),
+          sortByLetterboxd ? 'Note Letterboxd décroissante' : 'Trier par note Letterboxd')),
       dayGroups.length > 0 && h('div', { className: 'film-gallery' },
         dayGroups.map(([filmId, filmSessions]) =>
-          h(FilmTile, { key: filmId, filmId, filmSessions, showDayInLinks: selectedDay === 'all' }))),
+          h(FilmTile, { key: filmId, filmId, filmSessions, showDayInLinks: selectedDay === 'all', mobile }))),
       selectedDay !== 'all' && otherGroups.length > 0 && h('section', { className: 'other-week-films-section' },
         h('div', { className: 'other-week-heading' },
           h('div', null,
@@ -384,7 +414,7 @@
             'Afficher toute la semaine')),
         h('div', { className: 'film-gallery' },
           otherGroups.map(([filmId, filmSessions]) =>
-            h(FilmTile, { key: filmId, filmId, filmSessions, showDayInLinks: true })))));
+            h(FilmTile, { key: filmId, filmId, filmSessions, showDayInLinks: true, mobile })))));
   }
 
   function ClosedCinema({ cinema }) {
@@ -416,6 +446,7 @@
             h('option', { value: 'screen_desc' }, 'Taille d’écran décroissante'),
             h('option', { value: 'seats_desc' }, 'Nombre de fauteuils'), h('option', { value: 'cinema' }, 'Cinéma')))),
       h('p', { className: 'screen-note' }, '~ : dimensions estimées. Les capacités indiquent le nombre total de fauteuils de la salle.'),
+      h('p', { className: 'table-scroll-hint' }, 'Faites glisser le tableau pour comparer les écrans et les équipements →'),
       h('div', { className: 'table-scroll', role: 'region', 'aria-label': 'Comparatif des salles, défilement horizontal possible', tabIndex: 0 },
         h('table', { className: 'rooms-table' },
           h('caption', { className: 'sr-only' }, `Comparatif des ${roomCount} salles, y compris les salles historiques du Cézanne`),
@@ -424,8 +455,10 @@
           h('tbody', null, rooms.map((room) => h('tr', { key: `${room.cinema.id}-${room.number}` },
             h('td', { className: 'table-cinema' }, room.cinema.name,
               isClosed(room.cinema) && h('span', { className: 'closed-label' }, 'Travaux')),
-            h('th', { scope: 'row', className: 'room-name' }, roomName(room)),
-            h('td', null, h('span', { className: screenClass(room) }, dimensions(room))),
+            h('th', { scope: 'row', className: 'room-name' },
+              h('span', { className: 'table-room-cinema' }, room.cinema.name, isClosed(room.cinema) ? ' · Travaux' : ''),
+              roomName(room)),
+            h('td', null, h(ScreenScale, { room })),
             h('td', null, room.screen_area_m2 ? `${number(room.screen_area_m2)} m²` : 'N/C'),
             h('td', null, room.seats),
             h('td', null, h('div', null, room.projection), h('div', { className: 'room-extra' }, room.sound),
@@ -433,7 +466,26 @@
             h('td', { className: 'room-extra' }, room.notes)))))));
   }
 
+  function useMedia(query) {
+    const [matches, setMatches] = useState(() => window.matchMedia(query).matches);
+    useEffect(() => {
+      const media = window.matchMedia(query);
+      const update = () => setMatches(media.matches);
+      update();
+      media.addEventListener('change', update);
+      return () => media.removeEventListener('change', update);
+    }, [query]);
+    return matches;
+  }
+
   function App() {
+    const isPhone = useMedia('(max-width: 767px)');
+    const isCompact = useMedia('(max-width: 1023px)');
+    const filterDialog = useRef(null);
+    const filterTrigger = useRef(null);
+    const showResultsOnClose = useRef(false);
+    const headerRef = useRef(null);
+    const dayListRef = useRef(null);
     const [activeTab, setActiveTab] = useState('cinemas');
     const [selectedDay, setSelectedDay] = useState(defaultDay);
     const [selectedCinema, setSelectedCinema] = useState('all');
@@ -445,6 +497,58 @@
     const [filtersOpen, setFiltersOpen] = useState(false);
     const [sort, setSort] = useState('screen_desc');
     const [sortByLetterboxd, setSortByLetterboxd] = useState(false);
+
+    useEffect(() => {
+      const header = headerRef.current;
+      const update = () => document.documentElement.style.setProperty('--header-height', `${header.getBoundingClientRect().height}px`);
+      update();
+      const observer = new ResizeObserver(update);
+      observer.observe(header);
+      return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+      const revealActiveDay = () => {
+        const list = dayListRef.current;
+        const active = list && list.querySelector('[aria-pressed="true"]');
+        if (!active) return;
+        const bounds = list.getBoundingClientRect();
+        const button = active.getBoundingClientRect();
+        if (button.left < bounds.left) list.scrollLeft += button.left - bounds.left - 8;
+        else if (button.right > bounds.right) list.scrollLeft += button.right - bounds.right + 8;
+      };
+      revealActiveDay();
+      window.addEventListener('resize', revealActiveDay);
+      return () => window.removeEventListener('resize', revealActiveDay);
+    }, [selectedDay, activeTab]);
+
+    useEffect(() => {
+      const dialog = filterDialog.current;
+      if (!isCompact || activeTab === 'salles' || !dialog) {
+        if (filtersOpen) setFiltersOpen(false);
+        return;
+      }
+      if (filtersOpen && !dialog.open) {
+        dialog.showModal();
+      } else if (!filtersOpen && dialog.open) {
+        dialog.close();
+        if (showResultsOnClose.current) {
+          const main = document.getElementById('main-content');
+          main.focus({ preventScroll: true });
+          main.scrollIntoView({ block: 'start' });
+        } else if (filterTrigger.current && filterTrigger.current.isConnected) {
+          filterTrigger.current.focus({ preventScroll: true });
+        }
+        showResultsOnClose.current = false;
+      }
+    }, [filtersOpen, isCompact, activeTab]);
+
+    useEffect(() => {
+      if (!isCompact || !filtersOpen) return;
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = previousOverflow; };
+    }, [isCompact, filtersOpen]);
 
     // Actualisation automatique : recharge les séances toutes les heures,
     // et au retour sur l'onglet s'il est resté ouvert plus de 30 min.
@@ -527,14 +631,45 @@
       setSearchQuery('');
     }
     function selectField(label, id, value, setter, options) {
+      const phoneLabels = {
+        'version-filter': { all: 'Toutes', VOST: 'VOST', VF: 'VF' },
+        'screen-filter': { all: 'Tous', min10: '≥ 10 m', min14: '≥ 14 m', imax: 'IMAX' },
+        'time-filter': { all: 'Journée', afternoon: 'Avant 18h', evening: 'Dès 18h' },
+        'avail-filter': { all: 'Toutes', available: 'Disponibles' }
+      };
       return h('label', { className: 'select-field', htmlFor: id }, h('span', null, label),
         h('select', { id, value, onChange: (event) => setter(event.target.value) },
-          options.map(([optionValue, text]) => h('option', { key: optionValue, value: optionValue }, text))));
+          options.map(([optionValue, text]) => h('option', { key: optionValue, value: optionValue, 'aria-label': text },
+            isPhone ? (phoneLabels[id] || {})[optionValue] || text : text))));
+    }
+
+    function filterButton(extraClass = '') {
+      return h('button', { type: 'button', className: `filter-toggle ${extraClass}`,
+        'aria-expanded': filtersOpen, 'aria-controls': 'advanced-filters', 'aria-haspopup': 'dialog',
+        onClick: (event) => { filterTrigger.current = event.currentTarget; setFiltersOpen(true); } },
+        h(Icon, { name: 'filters' }), 'Filtres', countFilters > 0 && h('span', { className: 'filter-count' }, countFilters));
+    }
+
+    function renderFilterPanel() {
+      return h('div', { id: 'advanced-filters', className: 'filter-panel is-open' },
+        h('div', { className: 'cinema-filters', role: 'group', 'aria-label': 'Choisir un cinéma' },
+          cinemaOptions.map((option) => h('button', { key: option.id, type: 'button',
+            className: `filter-chip${selectedCinema === option.id ? ' is-active' : ''}`,
+            'aria-pressed': selectedCinema === option.id, onClick: () => setSelectedCinema(option.id) }, option.label))),
+        h('div', { className: 'advanced-filters' },
+          selectField('Version', 'version-filter', selectedVersion, setSelectedVersion,
+            [['all', 'Toutes les versions'], ['VOST', 'VOST uniquement'], ['VF', 'VF uniquement']]),
+          selectField('Taille d’écran', 'screen-filter', selectedScreen, setSelectedScreen,
+            [['all', 'Tous les écrans'], ['min10', 'Écran ≥ 10 m'], ['min14', 'Grand écran ≥ 14 m'], ['imax', 'IMAX · 25 × 15 m']]),
+          selectField('Horaire', 'time-filter', selectedTime, setSelectedTime,
+            [['all', 'Toute la journée'], ['afternoon', 'Avant 18h'], ['evening', 'Soirée · à partir de 18h']]),
+          selectField('Disponibilité', 'avail-filter', selectedAvailability, setSelectedAvailability,
+            [['all', 'Toutes les séances'], ['available', 'Places disponibles uniquement']])));
     }
 
     return h('div', { className: 'app-shell' },
       h('a', { className: 'skip-link', href: '#main-content' }, 'Aller aux résultats'),
-      h('header', { className: 'site-header' },
+      h('header', { className: 'site-header', ref: headerRef },
         h('div', { className: 'header-main container' },
           h('a', { className: 'brand', href: '#', onClick: (event) => { event.preventDefault(); setActiveTab('cinemas'); } },
             h('span', { className: 'brand-mark' }, h(Icon, { name: 'film' })),
@@ -543,18 +678,21 @@
           activeTab !== 'salles' && h('div', { className: 'header-search' },
             h('div', { className: 'search-field' }, h(Icon, { name: 'search' }),
               h('label', { className: 'sr-only', htmlFor: 'film-search' }, 'Rechercher un film, réalisateur, acteur ou salle'),
-              h('input', { id: 'film-search', type: 'search', value: searchQuery, placeholder: 'Un film, un réalisateur, une salle…',
+              h('input', { id: 'film-search', type: 'search', value: searchQuery, placeholder: 'Film, réalisateur, salle…',
                 onChange: (event) => setSearchQuery(event.target.value) }),
               searchQuery && h('button', { className: 'search-clear', type: 'button', onClick: () => setSearchQuery(''),
-                'aria-label': 'Effacer la recherche' }, h(Icon, { name: 'close' })))),
+                'aria-label': 'Effacer la recherche' }, h(Icon, { name: 'close' }))),
+            filterButton('mobile-filter-toggle')),
           h('nav', { className: 'view-tabs', 'aria-label': 'Vues de la programmation' },
-            [['cinemas', 'Séances'], ['films', `Films (${totalWeekFilmCount})`], ['salles', 'Salles']].map(([id, label]) =>
+            [['cinemas', 'Séances'], ['films', 'Films'], ['salles', 'Salles']].map(([id, label]) =>
               h('button', { key: id, type: 'button', className: `view-tab${activeTab === id ? ' is-active' : ''}`,
-                'aria-pressed': activeTab === id, 'aria-controls': 'main-content', onClick: () => setActiveTab(id) }, label)))),
+                'aria-label': id === 'films' ? `Films (${totalWeekFilmCount})` : label,
+                'aria-pressed': activeTab === id, 'aria-controls': 'main-content', onClick: () => setActiveTab(id) },
+                label, id === 'films' && h('span', { className: 'tab-count', 'aria-hidden': true }, ` (${totalWeekFilmCount})`))))),
         activeTab !== 'salles' && h('div', { className: 'filter-bar' },
           h('div', { className: 'filter-content container' },
             h('div', { className: 'quick-controls' },
-              h('div', { className: 'day-list', role: 'group', 'aria-label': 'Choisir un jour' },
+              h('div', { className: 'day-list', ref: dayListRef, role: 'group', 'aria-label': 'Choisir un jour' },
                 h('button', { type: 'button', className: `day-button${selectedDay === 'all' ? ' is-active' : ''}`,
                   'aria-pressed': selectedDay === 'all', onClick: () => setSelectedDay('all') }, 'La semaine'),
                 days.map((day) => h('button', { key: day.date, type: 'button', 'data-date': day.date,
@@ -569,26 +707,30 @@
                   'aria-pressed': selectedAvailability === 'available',
                   onClick: () => setSelectedAvailability(selectedAvailability === 'available' ? 'all' : 'available'),
                   title: 'Masquer les séances complètes'
-                },
-                  h(Icon, { name: 'ticket' }),
+                }, h(Icon, { name: 'ticket' }),
                   selectedAvailability === 'available' ? 'Places dispo uniquement ✓' : 'Places dispo uniquement'),
-                h('button', { type: 'button', className: 'filter-toggle', 'aria-expanded': filtersOpen,
-                  'aria-controls': 'advanced-filters', onClick: () => setFiltersOpen(!filtersOpen) },
-                  h(Icon, { name: 'filters' }), 'Filtres', countFilters > 0 && h('span', { className: 'filter-count' }, countFilters)))),
-            h('div', { id: 'advanced-filters', className: `filter-panel${filtersOpen ? ' is-open' : ''}` },
-              h('div', { className: 'cinema-filters', role: 'group', 'aria-label': 'Choisir un cinéma' },
-                cinemaOptions.map((option) => h('button', { key: option.id, type: 'button',
-                  className: `filter-chip${selectedCinema === option.id ? ' is-active' : ''}`,
-                  'aria-pressed': selectedCinema === option.id, onClick: () => setSelectedCinema(option.id) }, option.label))),
-              h('div', { className: 'advanced-filters' },
-                selectField('Version', 'version-filter', selectedVersion, setSelectedVersion,
-                  [['all', 'Toutes les versions'], ['VOST', 'VOST uniquement'], ['VF', 'VF uniquement']]),
-                selectField('Taille d’écran', 'screen-filter', selectedScreen, setSelectedScreen,
-                  [['all', 'Tous les écrans'], ['min10', 'Écran ≥ 10 m'], ['min14', 'Grand écran ≥ 14 m'], ['imax', 'IMAX · 25 × 15 m']]),
-                selectField('Horaire', 'time-filter', selectedTime, setSelectedTime,
-                  [['all', 'Toute la journée'], ['afternoon', 'Avant 18h'], ['evening', 'Soirée · à partir de 18h']]),
-                selectField('Disponibilité', 'avail-filter', selectedAvailability, setSelectedAvailability,
-                  [['all', 'Toutes les séances'], ['available', 'Places disponibles uniquement']])))))),
+                filterButton())),
+            !isCompact && renderFilterPanel()))),
+      isCompact && activeTab !== 'salles' && h('dialog', {
+        ref: filterDialog, className: 'mobile-filter-sheet', 'aria-labelledby': 'filters-heading',
+        onCancel: (event) => { event.preventDefault(); setFiltersOpen(false); },
+        onClose: () => setFiltersOpen(false),
+        onClick: (event) => {
+          const bounds = event.currentTarget.getBoundingClientRect();
+          if (event.target === event.currentTarget && (event.clientX < bounds.left || event.clientX > bounds.right ||
+              event.clientY < bounds.top || event.clientY > bounds.bottom)) setFiltersOpen(false);
+        }
+      }, h('div', { className: 'sheet-layout' },
+        h('div', { className: 'sheet-header' },
+          h('div', null, h('h2', { id: 'filters-heading' }, 'Choisir sa séance'),
+            h('p', { className: 'sheet-result-count', role: 'status', 'aria-live': 'polite' }, plural(filtered.length, 'séance'))),
+          h('button', { type: 'button', className: 'sheet-close', 'aria-label': 'Fermer les filtres', onClick: () => setFiltersOpen(false) },
+            h(Icon, { name: 'close' }))),
+        h('div', { className: 'sheet-content' }, renderFilterPanel()),
+        h('div', { className: 'sheet-footer' },
+          h('button', { type: 'button', className: 'text-button sheet-reset', onClick: resetFilters }, 'Réinitialiser'),
+          h('button', { type: 'button', className: 'primary-button sheet-apply',
+            onClick: () => { showResultsOnClose.current = true; setFiltersOpen(false); } }, `Voir les ${plural(filtered.length, 'séance')}`)))),
       h('main', { id: 'main-content', className: 'page-content container', tabIndex: -1 },
         activeTab === 'salles'
           ? h(SallesComparator, { sort, setSort })
@@ -629,7 +771,8 @@
                           filtered: cinemaSessions,
                           allCinemaWeekSessions,
                           selectedDay: effectiveDay,
-                          onSelectDay: setSelectedDay
+                          onSelectDay: setSelectedDay,
+                          mobile: isPhone
                         })
                       : null;
                   })
@@ -639,7 +782,8 @@
                     selectedDay: effectiveDay,
                     onSelectDay: setSelectedDay,
                     sortByLetterboxd,
-                    setSortByLetterboxd
+                    setSortByLetterboxd,
+                    mobile: isPhone
                   }),
               filtered.length > 0 && h('p', { className: 'screen-note' }, '~ : dimensions d’écran estimées. Capacités des salles et statut « Places disponibles / Complet » fournis par Pathé. Le paiement s’effectue directement sur la billetterie officielle Pathé / Institut de l’Image.'),
               activeTab === 'cinemas' && cinemas.filter((cinema) => isClosed(cinema) &&
