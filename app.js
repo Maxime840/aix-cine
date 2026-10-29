@@ -674,16 +674,35 @@
         h(Icon, { name: 'filters' }), 'Filtres', countFilters > 0 && h('span', { className: 'filter-count' }, countFilters));
     }
 
-    function timeRangeField() {
-      return h('div', { className: 'time-range-field', role: 'group', 'aria-label': 'Plage horaire personnalisée' },
-        h('label', { className: 'time-input-field', htmlFor: 'time-from' }, h('span', null, 'De'),
-          h('input', { id: 'time-from', type: 'time', value: timeFrom, 'aria-label': 'Heure de début',
-            onChange: (event) => setTimeFrom(event.target.value) })),
-        h('span', { className: 'time-range-sep', 'aria-hidden': true }, 'à'),
-        h('label', { className: 'time-input-field', htmlFor: 'time-to' }, h('span', null, 'À'),
-          h('input', { id: 'time-to', type: 'time', value: timeTo, 'aria-label': 'Heure de fin',
-            onChange: (event) => setTimeTo(event.target.value) })));
+    function frenchTime(id, value, setter, label) {
+      const [hour = '', minute = ''] = String(value || '').split(':');
+      const update = (part, raw) => {
+        const digits = String(raw).replace(/\D/g, '').slice(0, 2);
+        const capped = digits === '' ? '' : Number(digits) > (part === 'hour' ? 23 : 59) ? String(part === 'hour' ? 23 : 59) : digits;
+        setter(part === 'hour' ? capped + ':' + minute : hour + ':' + capped);
+      };
+      const pad = (part) => {
+        if (part === 'hour' && hour) setter(hour.padStart(2, '0') + ':' + minute);
+        if (part === 'minute' && minute) setter(hour + ':' + minute.padStart(2, '0'));
+      };
+      return h(React.Fragment, null,
+        h('input', { id, className: 'time-part', type: 'text', inputMode: 'numeric', autoComplete: 'off',
+          placeholder: '00', maxLength: 2, value: hour, 'aria-label': label + ' (heure, de 0 à 23)',
+          onChange: (event) => update('hour', event.target.value), onBlur: () => pad('hour') }),
+        h('span', { className: 'time-h', 'aria-hidden': true }, 'h'),
+        h('input', { className: 'time-part', type: 'text', inputMode: 'numeric', autoComplete: 'off',
+          placeholder: '00', maxLength: 2, value: minute, 'aria-label': label + ' (minutes)',
+          onChange: (event) => update('minute', event.target.value), onBlur: () => pad('minute') }));
     }
+
+    function timeRangeField() {
+      return h('div', { className: 'time-range-field', role: 'group', 'aria-label': 'Plage horaire personnalisée, format 24 heures' },
+        h('span', { className: 'time-range-label' }, 'De'),
+        frenchTime('time-from', timeFrom, setTimeFrom, 'Heure de début'),
+        h('span', { className: 'time-range-sep', 'aria-hidden': true }, 'à'),
+        frenchTime('time-to', timeTo, setTimeTo, 'Heure de fin'));
+    }
+
 
     function renderFilterPanel() {
       return h('div', { id: 'advanced-filters', className: 'filter-panel is-open' },
