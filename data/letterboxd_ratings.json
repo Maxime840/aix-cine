@@ -699,24 +699,6 @@
     "film_fingerprint": "garance|2026|jeanne herry",
     "requested_url": "https://letterboxd.com/film/another-day-2026/"
   },
-  "frankenstein-1931": {
-    "letterboxd_url": "https://letterboxd.com/film/frankenstein-1931/",
-    "letterboxd_rating": 3.76,
-    "rating_count": 243892,
-    "source": "json_ld",
-    "title": "Frankenstein",
-    "year": 1931,
-    "directors": [
-      "James Whale"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-10-28T20:46:20+00:00",
-    "checked_at": "2026-10-28T20:46:20+00:00",
-    "film_fingerprint": "frankenstein|1931|james whale",
-    "requested_url": "https://letterboxd.com/film/frankenstein-1931/"
-  },
   "portrait-dorian-gray": {
     "letterboxd_url": "https://letterboxd.com/film/the-picture-of-dorian-gray/",
     "letterboxd_rating": 3.59,
