@@ -499,6 +499,8 @@
     const [selectedVersion, setSelectedVersion] = useState('all');
     const [selectedScreen, setSelectedScreen] = useState('all');
     const [selectedTime, setSelectedTime] = useState('all');
+    const [timeFrom, setTimeFrom] = useState('18:00');
+    const [timeTo, setTimeTo] = useState('23:59');
     const [selectedAvailability, setSelectedAvailability] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [filtersOpen, setFiltersOpen] = useState(false);
@@ -585,8 +587,21 @@
       }
       if (selectedAvailability === 'available' && getSeatsInfo(session).status === 'soldout') return false;
       const hour = Number(session.time.split(':')[0]);
+      const minutesOf = (value) => {
+        const [hh, mm] = String(value || '').split(':').map(Number);
+        return Number.isFinite(hh) && Number.isFinite(mm) ? hh * 60 + mm : null;
+      };
+      const sessionMinutes = minutesOf(session.time);
       if (selectedTime === 'afternoon' && hour >= 18) return false;
       if (selectedTime === 'evening' && hour < 18) return false;
+      if (selectedTime === 'custom') {
+        const from = minutesOf(timeFrom);
+        const to = minutesOf(timeTo);
+        if (from !== null && to !== null && sessionMinutes !== null) {
+          if (from <= to && (sessionMinutes < from || sessionMinutes > to)) return false;
+          if (from > to && sessionMinutes < from && sessionMinutes > to) return false;
+        }
+      }
       const haystack = [film.title, film.director, film.cast, room && room.name, session.note,
         room && room.projection, room && room.sound, ...(room && room.tech || [])].join(' ');
       return !searchQuery.trim() || normalize(haystack).includes(normalize(searchQuery.trim()));
@@ -595,7 +610,7 @@
     // Toutes les séances de la semaine qui correspondent aux filtres hors jour
     const weekFiltered = useMemo(() =>
       sessions.filter(matchesNonDayFilters).sort(byTime),
-      [selectedCinema, selectedVersion, selectedScreen, selectedTime, selectedAvailability, searchQuery]);
+      [selectedCinema, selectedVersion, selectedScreen, selectedTime, timeFrom, timeTo, selectedAvailability, searchQuery]);
 
     // Séances du jour sélectionné
     const dayFiltered = useMemo(() =>
@@ -627,21 +642,23 @@
       selectedCinema !== 'all' && selectedCinemaLabel,
       selectedVersion !== 'all' && selectedVersion,
       selectedScreen !== 'all' && ({ min10: 'Écran ≥ 10 m', min14: 'Écran ≥ 14 m', imax: 'IMAX' })[selectedScreen],
-      selectedTime !== 'all' && (selectedTime === 'evening' ? 'À partir de 18h' : 'Avant 18h'),
+      selectedTime !== 'all' && (selectedTime === 'custom'
+        ? `De ${String(timeFrom).replace(':', 'h')} à ${String(timeTo).replace(':', 'h')}`
+        : selectedTime === 'evening' ? 'À partir de 18h' : 'Avant 18h'),
       selectedAvailability === 'available' && 'Places disponibles uniquement',
       searchQuery.trim() && `« ${searchQuery.trim()} »`
     ].filter(Boolean).join(' · ');
 
     function resetFilters() {
       setSelectedDay(defaultDay); setSelectedCinema('all'); setSelectedVersion('all');
-      setSelectedScreen('all'); setSelectedTime('all'); setSelectedAvailability('all');
+      setSelectedScreen('all'); setSelectedTime('all'); setTimeFrom('18:00'); setTimeTo('23:59'); setSelectedAvailability('all');
       setSearchQuery('');
     }
     function selectField(label, id, value, setter, options) {
       const phoneLabels = {
         'version-filter': { all: 'Toutes', VOST: 'VOST', VF: 'VF' },
         'screen-filter': { all: 'Tous', min10: '≥ 10 m', min14: '≥ 14 m', imax: 'IMAX' },
-        'time-filter': { all: 'Journée', afternoon: 'Avant 18h', evening: 'Dès 18h' },
+        'time-filter': { all: 'Journée', afternoon: 'Avant 18h', evening: 'Dès 18h', custom: 'Plage perso' },
         'avail-filter': { all: 'Toutes', available: 'Disponibles' }
       };
       return h('label', { className: 'select-field', htmlFor: id }, h('span', null, label),
@@ -657,6 +674,17 @@
         h(Icon, { name: 'filters' }), 'Filtres', countFilters > 0 && h('span', { className: 'filter-count' }, countFilters));
     }
 
+    function timeRangeField() {
+      return h('div', { className: 'time-range-field', role: 'group', 'aria-label': 'Plage horaire personnalisée' },
+        h('label', { className: 'time-input-field', htmlFor: 'time-from' }, h('span', null, 'De'),
+          h('input', { id: 'time-from', type: 'time', value: timeFrom, 'aria-label': 'Heure de début',
+            onChange: (event) => setTimeFrom(event.target.value) })),
+        h('span', { className: 'time-range-sep', 'aria-hidden': true }, 'à'),
+        h('label', { className: 'time-input-field', htmlFor: 'time-to' }, h('span', null, 'À'),
+          h('input', { id: 'time-to', type: 'time', value: timeTo, 'aria-label': 'Heure de fin',
+            onChange: (event) => setTimeTo(event.target.value) })));
+    }
+
     function renderFilterPanel() {
       return h('div', { id: 'advanced-filters', className: 'filter-panel is-open' },
         h('div', { className: 'cinema-filters', role: 'group', 'aria-label': 'Choisir un cinéma' },
@@ -668,8 +696,8 @@
             [['all', 'Toutes les versions'], ['VOST', 'VOST uniquement'], ['VF', 'VF uniquement']]),
           selectField('Taille d’écran', 'screen-filter', selectedScreen, setSelectedScreen,
             [['all', 'Tous les écrans'], ['min10', 'Écran ≥ 10 m'], ['min14', 'Grand écran ≥ 14 m'], ['imax', 'IMAX · 25 × 15 m']]),
-          selectField('Horaire', 'time-filter', selectedTime, setSelectedTime,
-            [['all', 'Toute la journée'], ['afternoon', 'Avant 18h'], ['evening', 'Soirée · à partir de 18h']]),
+          h(React.Fragment, null, selectField('Horaire', 'time-filter', selectedTime, setSelectedTime,
+            [['all', 'Toute la journée'], ['afternoon', 'Avant 18h'], ['evening', 'Soirée · à partir de 18h'], ['custom', 'Plage personnalisée…']]), selectedTime === 'custom' && timeRangeField()),
           selectField('Disponibilité', 'avail-filter', selectedAvailability, setSelectedAvailability,
             [['all', 'Toutes les séances'], ['available', 'Places disponibles uniquement']])));
     }
