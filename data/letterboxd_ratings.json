@@ -764,44 +764,6 @@
     "requested_url": "https://letterboxd.com/film/stand-by-me/",
     "override_url": "https://letterboxd.com/film/stand-by-me/"
   },
-  "entretien-vampire": {
-    "letterboxd_url": "https://letterboxd.com/film/interview-with-the-vampire/",
-    "letterboxd_rating": 3.6,
-    "rating_count": 644237,
-    "source": "json_ld",
-    "title": "Interview with the Vampire",
-    "year": 1994,
-    "directors": [
-      "Neil Jordan"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-10-29T23:14:41+00:00",
-    "checked_at": "2026-10-29T23:14:41+00:00",
-    "film_fingerprint": "entretien avec un vampire|1994|neil jordan",
-    "requested_url": "https://letterboxd.com/film/interview-with-the-vampire/",
-    "override_url": "https://letterboxd.com/film/interview-with-the-vampire/"
-  },
-  "jekyll-hyde-1941": {
-    "letterboxd_url": "https://letterboxd.com/film/dr-jekyll-and-mr-hyde-1941/",
-    "letterboxd_rating": 3.29,
-    "rating_count": 8244,
-    "source": "json_ld",
-    "title": "Dr. Jekyll and Mr. Hyde",
-    "year": 1941,
-    "directors": [
-      "Victor Fleming"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-10-29T23:14:41+00:00",
-    "checked_at": "2026-10-29T23:14:41+00:00",
-    "film_fingerprint": "docteur jekyll et mister hyde|1941|victor fleming",
-    "requested_url": "https://letterboxd.com/film/dr-jekyll-and-mr-hyde-1941/",
-    "override_url": "https://letterboxd.com/film/dr-jekyll-and-mr-hyde-1941/"
-  },
   "christine-1983": {
     "letterboxd_url": "https://letterboxd.com/film/christine-1983/",
     "letterboxd_rating": 3.51,
