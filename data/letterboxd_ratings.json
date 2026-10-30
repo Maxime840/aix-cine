@@ -764,25 +764,6 @@
     "requested_url": "https://letterboxd.com/film/stand-by-me/",
     "override_url": "https://letterboxd.com/film/stand-by-me/"
   },
-  "christine-1983": {
-    "letterboxd_url": "https://letterboxd.com/film/christine-1983/",
-    "letterboxd_rating": 3.51,
-    "rating_count": 205577,
-    "source": "json_ld",
-    "title": "Christine",
-    "year": 1983,
-    "directors": [
-      "John Carpenter"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-10-30T12:43:57+00:00",
-    "checked_at": "2026-10-30T12:43:57+00:00",
-    "film_fingerprint": "christine|1983|john carpenter",
-    "requested_url": "https://letterboxd.com/film/christine-1983/",
-    "override_url": "https://letterboxd.com/film/christine-1983/"
-  },
   "shining-1980": {
     "letterboxd_url": "https://letterboxd.com/film/the-shining/",
     "letterboxd_rating": 4.21,
