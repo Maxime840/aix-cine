@@ -764,44 +764,6 @@
     "requested_url": "https://letterboxd.com/film/the-shining/",
     "override_url": "https://letterboxd.com/film/the-shining/"
   },
-  "carrie-1976": {
-    "letterboxd_url": "https://letterboxd.com/film/carrie-1976/",
-    "letterboxd_rating": 3.84,
-    "rating_count": 1063616,
-    "source": "json_ld",
-    "title": "Carrie",
-    "year": 1976,
-    "directors": [
-      "Brian De Palma"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-10-31T02:16:49+00:00",
-    "checked_at": "2026-10-31T02:16:49+00:00",
-    "film_fingerprint": "carrie au bal du diable|1976|brian de palma",
-    "requested_url": "https://letterboxd.com/film/carrie-1976/",
-    "override_url": "https://letterboxd.com/film/carrie-1976/"
-  },
-  "creepshow-1982": {
-    "letterboxd_url": "https://letterboxd.com/film/creepshow/",
-    "letterboxd_rating": 3.55,
-    "rating_count": 96799,
-    "source": "json_ld",
-    "title": "Creepshow",
-    "year": 1982,
-    "directors": [
-      "George A. Romero"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-10-31T02:16:49+00:00",
-    "checked_at": "2026-10-31T02:16:49+00:00",
-    "film_fingerprint": "creepshow|1982|george a romero",
-    "requested_url": "https://letterboxd.com/film/creepshow/",
-    "override_url": "https://letterboxd.com/film/creepshow/"
-  },
   "simetierre-1989": {
     "letterboxd_url": "https://letterboxd.com/film/pet-sematary/",
     "letterboxd_rating": 3.25,
