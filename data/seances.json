@@ -1,6 +1,6 @@
 {
   "week_label": "Du samedi 31 octobre au vendredi 6 novembre 2026",
-  "updated_at": "2026-10-31T03:16:48+01:00",
+  "updated_at": "2026-10-31T10:31:36+01:00",
   "days": [
     {
       "date": "2026-10-31",
@@ -296,7 +296,7 @@
       "poster_url": "posters/l-ile-des-souvenirs-48057.jpg",
       "poster_remote_url": "https://media.pathe.fr/movie/alex/HO00009529/poster/md/4/movie&uuid=24A586F2-6628-4ED5-9019-B9067B061817",
       "poster_bg": "from-indigo-950 via-slate-900 to-emerald-950",
-      "ticket_url": "https://s.pathe.fr/fr/V3120S200465/booking",
+      "ticket_url": "https://s.pathe.fr/fr/V3120S200478/booking",
       "pathe_film_url": "https://www.pathe.fr/films/l-ile-des-souvenirs-48057",
       "synopsis": "Jo et Raissa, deux meilleures amies, tombent par hasard sur un portail mystérieux qui les transporte à Nakali, une île fantastique peuplée de créatures magiques. Lorsqu'elles découvrent que le prix à payer pour rentrer chez elles est de perdre tous les souvenirs de leur amitié, elles tentent de trouver un moyen de quitter l'île avant de s'oublier l'une l'autre pour toujours.",
       "letterboxd_url": "https://letterboxd.com/film/forgotten-island-2026/",
@@ -492,7 +492,7 @@
       "poster_url": "posters/les-miserables-48629.jpg",
       "poster_remote_url": "https://media.pathe.fr/movie/alex/HO00009813/poster/md/1/movie&uuid=61F7DC8A-774D-43BA-B717-83D31322DAC3",
       "poster_bg": "from-violet-950 via-slate-950 to-zinc-950",
-      "ticket_url": "https://s.pathe.fr/fr/V3120S200467/booking",
+      "ticket_url": "https://s.pathe.fr/fr/V3120S200487/booking",
       "pathe_film_url": "https://www.pathe.fr/films/les-miserables-48629",
       "synopsis": "Libéré après 19 ans de bagne pour le vol d’un pain, Jean Valjean décide de changer de vie et de faire le bien autour de lui. Sous une fausse identité, il devient avec le temps un notable respecté de tous. Venant en aide à Fantine, une ouvrière mourante, il promet de sauver sa fille, Cosette, des griffes des cruels Thénardier. Mais son passé le rattrape : l’inspecteur Javert, un policier implacable au passé lui aussi tourmenté, le traque sans relâche afin de le renvoyer au bagne. Dans un Paris en pleine révolution, Valjean doit lutter pour protéger Cosette et achever sa rédemption, entre sacrifices et quête de justice.",
       "letterboxd_url": "https://letterboxd.com/film/les-miserables-2026/",
@@ -3431,26 +3431,6 @@
       "film_payment_url": "https://s.pathe.fr/fr/V3120S200768/booking"
     },
     {
-      "id": "pathe-plan-de-campagne-2026-10-31-4-10:10-l-ile-des-so-0",
-      "cinema_id": "pathe-plan-de-campagne",
-      "date": "2026-10-31",
-      "time": "10:10",
-      "end_time": "12:19",
-      "reservability_end": "2026-10-31T10:30:00+01:00",
-      "film_id": "l-ile-des-souvenirs-48057",
-      "salle": "4",
-      "seats_override": 273,
-      "seats_total": 273,
-      "seats_remaining": null,
-      "availability_status": "available",
-      "pathe_status": "available",
-      "version": "VF",
-      "note": null,
-      "price_full": 15.2,
-      "booking_url": "https://s.pathe.fr/fr/V3120S200465/booking",
-      "film_payment_url": "https://s.pathe.fr/fr/V3120S200465/booking"
-    },
-    {
       "id": "pathe-plan-de-campagne-2026-10-31-8-11:00-l-ile-des-so-1",
       "cinema_id": "pathe-plan-de-campagne",
       "date": "2026-10-31",
@@ -5729,26 +5709,6 @@
       "price_full": 15.2,
       "booking_url": "https://s.pathe.fr/fr/V3120S200771/booking",
       "film_payment_url": "https://s.pathe.fr/fr/V3120S200771/booking"
-    },
-    {
-      "id": "pathe-plan-de-campagne-2026-10-31-6-10:10-les-miserabl-0",
-      "cinema_id": "pathe-plan-de-campagne",
-      "date": "2026-10-31",
-      "time": "10:10",
-      "end_time": "13:28",
-      "reservability_end": "2026-10-31T10:30:00+01:00",
-      "film_id": "les-miserables-48629",
-      "salle": "6",
-      "seats_override": 111,
-      "seats_total": 111,
-      "seats_remaining": null,
-      "availability_status": "available",
-      "pathe_status": "available",
-      "version": "VF",
-      "note": null,
-      "price_full": 15.2,
-      "booking_url": "https://s.pathe.fr/fr/V3120S200467/booking",
-      "film_payment_url": "https://s.pathe.fr/fr/V3120S200467/booking"
     },
     {
       "id": "pathe-plan-de-campagne-2026-10-31-16-13:15-les-miserabl-1",
