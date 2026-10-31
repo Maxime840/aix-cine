@@ -517,25 +517,6 @@
     "requested_url": "https://letterboxd.com/film/hotel-transylvania/",
     "override_url": "https://letterboxd.com/film/hotel-transylvania/"
   },
-  "freddy-chapitre-1-les-griffes-de-la-nuit-47044": {
-    "letterboxd_url": "https://letterboxd.com/film/a-nightmare-on-elm-street/",
-    "letterboxd_rating": 3.71,
-    "rating_count": 884315,
-    "source": "json_ld",
-    "title": "A Nightmare on Elm Street",
-    "year": 1984,
-    "directors": [
-      "Wes Craven"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-10-31T02:16:49+00:00",
-    "checked_at": "2026-10-31T02:16:49+00:00",
-    "film_fingerprint": "freddy chapitre 1 les griffes de la nuit|1985|wes craven",
-    "requested_url": "https://letterboxd.com/film/a-nightmare-on-elm-street/",
-    "override_url": "https://letterboxd.com/film/a-nightmare-on-elm-street/"
-  },
   "ni-vue-ni-connue-52015": {
     "letterboxd_url": "https://letterboxd.com/film/all-about-corinne/",
     "letterboxd_rating": 3.25,
@@ -763,25 +744,6 @@
     "film_fingerprint": "shining|1980|stanley kubrick",
     "requested_url": "https://letterboxd.com/film/the-shining/",
     "override_url": "https://letterboxd.com/film/the-shining/"
-  },
-  "simetierre-1989": {
-    "letterboxd_url": "https://letterboxd.com/film/pet-sematary/",
-    "letterboxd_rating": 3.25,
-    "rating_count": 196558,
-    "source": "json_ld",
-    "title": "Pet Sematary",
-    "year": 1989,
-    "directors": [
-      "Mary Lambert"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-10-31T02:16:49+00:00",
-    "checked_at": "2026-10-31T02:16:49+00:00",
-    "film_fingerprint": "simetierre pet sematary|1989|mary lambert",
-    "requested_url": "https://letterboxd.com/film/pet-sematary/",
-    "override_url": "https://letterboxd.com/film/pet-sematary/"
   },
   "doctor-sleep-2019": {
     "letterboxd_url": "https://letterboxd.com/film/doctor-sleep/",
