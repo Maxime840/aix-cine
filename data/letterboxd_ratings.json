@@ -18,25 +18,6 @@
     "requested_url": "https://letterboxd.com/film/godzilla-minus-zero/",
     "override_url": "https://letterboxd.com/film/godzilla-minus-zero/"
   },
-  "bts-world-tour-arirang-in-sao-paulo-live-viewing-55472": {
-    "letterboxd_url": "https://letterboxd.com/film/bts-world-tour-arirang-in-sao-paulo/",
-    "letterboxd_rating": null,
-    "rating_count": null,
-    "source": "json_ld",
-    "title": "BTS WORLD TOUR [ARIRANG] in São Paulo",
-    "year": 2026,
-    "directors": [
-      "Ha Jung-jae"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "unrated",
-    "fetched_at": "2026-10-31T02:16:49+00:00",
-    "checked_at": "2026-10-31T02:16:49+00:00",
-    "film_fingerprint": "bts world tour arirang in sao paulo live viewing|2026|ha jung jae,jungjae ha",
-    "requested_url": "https://letterboxd.com/film/bts-world-tour-arirang-in-sao-paulo-live/",
-    "override_url": "https://letterboxd.com/film/bts-world-tour-arirang-in-sao-paulo-live/"
-  },
   "le-fantome-de-l-opera-46997": {
     "letterboxd_url": "https://letterboxd.com/film/the-phantom-of-the-opera-2026/",
     "letterboxd_rating": 3.11,
