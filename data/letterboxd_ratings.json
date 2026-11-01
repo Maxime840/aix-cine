@@ -96,8 +96,8 @@
   },
   "le-mystere-lucy-lost-52436": {
     "letterboxd_url": "https://letterboxd.com/film/lucy-lost/",
-    "letterboxd_rating": 3.87,
-    "rating_count": 1901,
+    "letterboxd_rating": 3.88,
+    "rating_count": 2082,
     "source": "json_ld",
     "title": "Lucy Lost",
     "year": 2026,
@@ -106,13 +106,12 @@
     ],
     "aliases": [],
     "identity_verified": true,
-    "status": "stale",
-    "fetched_at": "2026-10-31T02:16:49+00:00",
-    "checked_at": "2026-11-01T05:53:06+00:00",
+    "status": "ok",
+    "fetched_at": "2026-11-01T13:12:31+00:00",
+    "checked_at": "2026-11-01T13:12:31+00:00",
     "film_fingerprint": "le mystere lucy lost|2026|olivier clert",
     "requested_url": "https://letterboxd.com/film/lucy-lost/",
-    "override_url": "https://letterboxd.com/film/lucy-lost/",
-    "error": "http_301"
+    "override_url": "https://letterboxd.com/film/lucy-lost/"
   },
   "papa-ou-t-es-55275": {
     "letterboxd_url": "https://letterboxd.com/film/papa-ou-tes/",
@@ -480,44 +479,6 @@
     "requested_url": "https://letterboxd.com/film/tombe-du-ciel/",
     "override_url": "https://letterboxd.com/film/tombe-du-ciel/"
   },
-  "l-odyssee-43836": {
-    "letterboxd_url": "https://letterboxd.com/film/the-odyssey-2026/",
-    "letterboxd_rating": 4.34,
-    "rating_count": 4669910,
-    "source": "json_ld",
-    "title": "The Odyssey",
-    "year": 2026,
-    "directors": [
-      "Christopher Nolan"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-11-01T05:53:06+00:00",
-    "checked_at": "2026-11-01T05:53:06+00:00",
-    "film_fingerprint": "l odyssee|2026|christopher nolan",
-    "requested_url": "https://letterboxd.com/film/the-odyssey-2026/",
-    "override_url": "https://letterboxd.com/film/the-odyssey-2026/"
-  },
-  "hotel-transylvanie": {
-    "letterboxd_url": "https://letterboxd.com/film/hotel-transylvania/",
-    "letterboxd_rating": 3.43,
-    "rating_count": 891007,
-    "source": "json_ld",
-    "title": "Hotel Transylvania",
-    "year": 2012,
-    "directors": [
-      "Genndy Tartakovsky"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-11-01T05:53:06+00:00",
-    "checked_at": "2026-11-01T05:53:06+00:00",
-    "film_fingerprint": "hotel transylvanie|2013|genndy tartakovsky",
-    "requested_url": "https://letterboxd.com/film/hotel-transylvania/",
-    "override_url": "https://letterboxd.com/film/hotel-transylvania/"
-  },
   "ni-vue-ni-connue-52015": {
     "letterboxd_url": "https://letterboxd.com/film/all-about-corinne/",
     "letterboxd_rating": 3.26,
@@ -669,25 +630,6 @@
     "film_fingerprint": "notre salut|2026|emmanuel marre",
     "requested_url": "https://letterboxd.com/film/a-man-of-his-time/",
     "override_url": "https://letterboxd.com/film/a-man-of-his-time/"
-  },
-  "garance-52451": {
-    "letterboxd_url": "https://letterboxd.com/film/another-day-2026/",
-    "letterboxd_rating": 3.51,
-    "rating_count": 38967,
-    "source": "json_ld",
-    "title": "Another Day",
-    "year": 2026,
-    "directors": [
-      "Jeanne Herry"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-11-01T05:53:06+00:00",
-    "checked_at": "2026-11-01T05:53:06+00:00",
-    "film_fingerprint": "garance|2026|jeanne herry",
-    "requested_url": "https://letterboxd.com/film/another-day-2026/",
-    "override_url": "https://letterboxd.com/film/another-day-2026/"
   },
   "les-innocents-1961": {
     "letterboxd_url": "https://letterboxd.com/film/the-innocents/",
