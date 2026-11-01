@@ -631,25 +631,6 @@
     "requested_url": "https://letterboxd.com/film/a-man-of-his-time/",
     "override_url": "https://letterboxd.com/film/a-man-of-his-time/"
   },
-  "les-innocents-1961": {
-    "letterboxd_url": "https://letterboxd.com/film/the-innocents/",
-    "letterboxd_rating": 4.12,
-    "rating_count": 74431,
-    "source": "json_ld",
-    "title": "The Innocents",
-    "year": 1961,
-    "directors": [
-      "Jack Clayton"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-11-01T05:53:06+00:00",
-    "checked_at": "2026-11-01T05:53:06+00:00",
-    "film_fingerprint": "les innocents the innocents|1961|jack clayton",
-    "requested_url": "https://letterboxd.com/film/the-innocents/",
-    "override_url": "https://letterboxd.com/film/the-innocents/"
-  },
   "stand-by-me": {
     "letterboxd_url": "https://letterboxd.com/film/stand-by-me/",
     "letterboxd_rating": 4.2,
@@ -687,24 +668,5 @@
     "film_fingerprint": "shining|1980|stanley kubrick",
     "requested_url": "https://letterboxd.com/film/the-shining/",
     "override_url": "https://letterboxd.com/film/the-shining/"
-  },
-  "doctor-sleep-2019": {
-    "letterboxd_url": "https://letterboxd.com/film/doctor-sleep/",
-    "letterboxd_rating": 3.39,
-    "rating_count": 548266,
-    "source": "json_ld",
-    "title": "Doctor Sleep",
-    "year": 2019,
-    "directors": [
-      "Mike Flanagan"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-11-01T05:53:06+00:00",
-    "checked_at": "2026-11-01T05:53:06+00:00",
-    "film_fingerprint": "doctor sleep|2019|mike flanagan",
-    "requested_url": "https://letterboxd.com/film/doctor-sleep/",
-    "override_url": "https://letterboxd.com/film/doctor-sleep/"
   }
 }
