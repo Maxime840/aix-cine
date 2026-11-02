@@ -97,7 +97,7 @@
   "le-mystere-lucy-lost-52436": {
     "letterboxd_url": "https://letterboxd.com/film/lucy-lost/",
     "letterboxd_rating": 3.88,
-    "rating_count": 2082,
+    "rating_count": 2382,
     "source": "json_ld",
     "title": "Lucy Lost",
     "year": 2026,
@@ -107,8 +107,8 @@
     "aliases": [],
     "identity_verified": true,
     "status": "ok",
-    "fetched_at": "2026-11-01T13:12:31+00:00",
-    "checked_at": "2026-11-01T13:12:31+00:00",
+    "fetched_at": "2026-11-02T20:43:58+00:00",
+    "checked_at": "2026-11-02T20:43:58+00:00",
     "film_fingerprint": "le mystere lucy lost|2026|olivier clert",
     "requested_url": "https://letterboxd.com/film/lucy-lost/",
     "override_url": "https://letterboxd.com/film/lucy-lost/"
