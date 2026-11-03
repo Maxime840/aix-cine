@@ -479,25 +479,6 @@
     "requested_url": "https://letterboxd.com/film/tombe-du-ciel/",
     "override_url": "https://letterboxd.com/film/tombe-du-ciel/"
   },
-  "primetime-54936": {
-    "letterboxd_url": "https://letterboxd.com/film/primetime-2026/",
-    "letterboxd_rating": 3.66,
-    "rating_count": 886207,
-    "source": "json_ld",
-    "title": "Primetime",
-    "year": 2026,
-    "directors": [
-      "Lance Oppenheim"
-    ],
-    "aliases": [],
-    "identity_verified": true,
-    "status": "ok",
-    "fetched_at": "2026-11-02T10:54:19+00:00",
-    "checked_at": "2026-11-02T10:54:19+00:00",
-    "film_fingerprint": "primetime|2026|lance oppenheim",
-    "requested_url": "https://letterboxd.com/film/primetime-2026/",
-    "override_url": "https://letterboxd.com/film/primetime-2026/"
-  },
   "irish-travellers-52333": {
     "letterboxd_url": "https://letterboxd.com/film/tin-castle/",
     "letterboxd_rating": 3.67,
