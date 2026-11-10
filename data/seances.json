@@ -1,14 +1,7 @@
 {
-  "week_label": "Du lundi 9 novembre au dimanche 15 novembre 2026",
-  "updated_at": "2026-11-09T18:24:26+01:00",
+  "week_label": "Du mardi 10 novembre au lundi 16 novembre 2026",
+  "updated_at": "2026-11-10T02:28:02+01:00",
   "days": [
-    {
-      "date": "2026-11-09",
-      "label": "Lundi 9 nov.",
-      "short": "Lun 09",
-      "day_name": "Lundi",
-      "day_num": "09"
-    },
     {
       "date": "2026-11-10",
       "label": "Mardi 10 nov.",
@@ -50,6 +43,13 @@
       "short": "Dim 15",
       "day_name": "Dimanche",
       "day_num": "15"
+    },
+    {
+      "date": "2026-11-16",
+      "label": "Lundi 16 nov.",
+      "short": "Lun 16",
+      "day_name": "Lundi",
+      "day_num": "16"
     }
   ],
   "films": {},
