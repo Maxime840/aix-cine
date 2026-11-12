@@ -1,14 +1,7 @@
 {
-  "week_label": "Du mercredi 11 novembre au mardi 17 novembre 2026",
-  "updated_at": "2026-11-11T22:22:55+01:00",
+  "week_label": "Du jeudi 12 novembre au mercredi 18 novembre 2026",
+  "updated_at": "2026-11-12T03:54:24+01:00",
   "days": [
-    {
-      "date": "2026-11-11",
-      "label": "Mercredi 11 nov.",
-      "short": "Mer 11",
-      "day_name": "Mercredi",
-      "day_num": "11"
-    },
     {
       "date": "2026-11-12",
       "label": "Jeudi 12 nov.",
@@ -50,6 +43,13 @@
       "short": "Mar 17",
       "day_name": "Mardi",
       "day_num": "17"
+    },
+    {
+      "date": "2026-11-18",
+      "label": "Mercredi 18 nov.",
+      "short": "Mer 18",
+      "day_name": "Mercredi",
+      "day_num": "18"
     }
   ],
   "films": {},
