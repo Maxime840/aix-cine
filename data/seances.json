@@ -1,14 +1,7 @@
 {
-  "week_label": "Du mardi 24 novembre au lundi 30 novembre 2026",
-  "updated_at": "2026-11-24T18:33:03+01:00",
+  "week_label": "Du mercredi 25 novembre au mardi 1 décembre 2026",
+  "updated_at": "2026-11-25T03:20:09+01:00",
   "days": [
-    {
-      "date": "2026-11-24",
-      "label": "Mardi 24 nov.",
-      "short": "Mar 24",
-      "day_name": "Mardi",
-      "day_num": "24"
-    },
     {
       "date": "2026-11-25",
       "label": "Mercredi 25 nov.",
@@ -50,6 +43,13 @@
       "short": "Lun 30",
       "day_name": "Lundi",
       "day_num": "30"
+    },
+    {
+      "date": "2026-12-01",
+      "label": "Mardi 1 déc.",
+      "short": "Mar 01",
+      "day_name": "Mardi",
+      "day_num": "01"
     }
   ],
   "films": {},
