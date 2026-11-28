@@ -1,14 +1,7 @@
 {
-  "week_label": "Du vendredi 27 novembre au jeudi 3 décembre 2026",
-  "updated_at": "2026-11-27T19:53:16+01:00",
+  "week_label": "Du samedi 28 novembre au vendredi 4 décembre 2026",
+  "updated_at": "2026-11-28T02:54:38+01:00",
   "days": [
-    {
-      "date": "2026-11-27",
-      "label": "Vendredi 27 nov.",
-      "short": "Ven 27",
-      "day_name": "Vendredi",
-      "day_num": "27"
-    },
     {
       "date": "2026-11-28",
       "label": "Samedi 28 nov.",
@@ -50,6 +43,13 @@
       "short": "Jeu 03",
       "day_name": "Jeudi",
       "day_num": "03"
+    },
+    {
+      "date": "2026-12-04",
+      "label": "Vendredi 4 déc.",
+      "short": "Ven 04",
+      "day_name": "Vendredi",
+      "day_num": "04"
     }
   ],
   "films": {},
